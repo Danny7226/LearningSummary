@@ -26,6 +26,6 @@ Couple of comparisons
 * m-way search tree has at most m children with m-1 keys
 * m-way ST becomes B tree when a root has at least 2 children and other nodes has at least m/2 children, in the meantime, tree would be constructed bottom up (making sure all leaf at the same level)
 * B tree becomes B+ tree when each node has its presents in the leaf, leaf are linked and only leaf has pointers to the record (disk block).
-* B+ tree is used to optimize disk based storage indexing
+* B+ tree is used to optimize disk-based storage indexing. (A data-structure represents multi-level indexing )
 * B+ tree has leaf nodes linked for faster range operations
 * Direct lookup takes O(logn) compute complexity
