@@ -21,3 +21,11 @@ Couple of comparisons
 * K-position scatting is used to avoid uneven distribution of nodes. Results in k times re-shuffles when adding/deleting a new node
 * Replication is used to improve availability. When hash looking up, next node becomes next N nodes.
 * Eventual consistency provides faster read/write. For highest throughput, set W and R to be 1, meaning as long as one node performs operation successfully, return
+
+### B+ tree
+* m-way search tree has at most m children with m-1 keys
+* m-way ST becomes B tree when a root has at least 2 children and other nodes has at least m/2 children, in the meantime, tree would be constructed bottom up (making sure all leaf at the same level)
+* B tree becomes B+ tree when each node has its presents in the leaf, leaf are linked and only leaf has pointers to the record (disk block).
+* B+ tree is used to optimize disk based storage indexing
+* B+ tree has leaf nodes linked for faster range operations
+* Direct lookup takes O(logn) compute complexity
