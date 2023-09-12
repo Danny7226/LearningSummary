@@ -29,3 +29,13 @@ Couple of comparisons
 * B+ tree is used to optimize disk-based storage indexing. (A data-structure represents multi-level indexing )
 * B+ tree has leaf nodes linked for faster range operations
 * Direct lookup takes O(logn) compute complexity
+
+### Spring
+* Spring boot takes in http request in DispatchServlet (single entry point)
+* DispatchServlet has WebApplicationContext spawned when server spins up
+* DispatchServlet will dispatch requests to individual controller
+* DispatchServlet is essentially a java servlet, which opens a java socket bonded to a certain port
+* DispatchServlet acts as proxy so that it loads requests to RestController in different url path
+* Root context is used by controllers, whereas WebApplicationContext is used by front controller (DispatchServlet)
+* RestController returns data in textual format, whereas Controller returns the data to a ViewResolver
+
