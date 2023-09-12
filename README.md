@@ -16,3 +16,8 @@ Couple of comparisons
 * Partition key helps locate the physical data center. With a B+ tree, compute complexity is O(logn)
 * Relational database is not easy to scale as JOIN operation is time expensive as size goes larger and larger
 
+### Hash Ring
+* Hash ring favors consistent hashing, meaning less re-shuffled when it comes to node deletion/addition
+* K-position scatting is used to avoid uneven distribution of nodes. Results in k times re-shuffles when adding/deleting a new node
+* Replication is used to improve availability. When hash looking up, next node becomes next N nodes.
+* Eventual consistency provides faster read/write. For highest throughput, set W and R to be 1, meaning as long as one node performs operation successfully, return
