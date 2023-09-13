@@ -39,5 +39,17 @@ Couple of comparisons
 * Root context is used by controllers, whereas WebApplicationContext is used by front controller (DispatchServlet)
 * RestController returns data in textual format, whereas Controller returns the data to a ViewResolver
 
-### Spring transaction
+### Service discovery vs load balancer
+* Service discovery acts like a facade to provide endpoints of services to make endpoint changes easier
+* Service discovery provides ability to provide client cache
+* load balancer acts as dispatcher to dispatch requests to servers to make node addition/deletion easier
+
+### Spring transactional
 * TBD
+
+### Java memory model 
+* Java source code will be compiled by javac(java compiler) into .class hexadecimal files
+* Java Runtime Environment (JRE) will take .class files. Classloader loads classes into JVM in runtime
+* We all know static fields are stored into JVM heap instead of stack (each thread has its own stack) memory
+* Static fields points to the same reference in heap, however there is no guarantee of the visibility for all threads to see the changes
+* java volatile is used to make sure data is written into main memory and visibility to all threads
