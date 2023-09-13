@@ -30,8 +30,8 @@ Couple of comparisons
 * B+ tree has leaf nodes linked for faster range operations
 * Direct lookup takes O(logn) compute complexity
 
-### Spring
-* Spring boot takes in http request in DispatchServlet (single entry point)
+### Spring MVC
+* Spring MVC takes in http request in DispatchServlet (single entry point)
 * DispatchServlet has WebApplicationContext spawned when server spins up
 * DispatchServlet will dispatch requests to individual controller
 * DispatchServlet is essentially a java servlet, which opens a java socket bonded to a certain port
@@ -39,3 +39,5 @@ Couple of comparisons
 * Root context is used by controllers, whereas WebApplicationContext is used by front controller (DispatchServlet)
 * RestController returns data in textual format, whereas Controller returns the data to a ViewResolver
 
+### Spring transaction
+* TBD
