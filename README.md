@@ -53,3 +53,7 @@ Couple of comparisons
 * We all know static fields are stored into JVM heap instead of stack (each thread has its own stack) memory
 * Static fields points to the same reference in heap, however there is no guarantee of the visibility for all threads to see the changes
 * java volatile is used to make sure data is written into main memory and visibility to all threads
+* Load-time weaving in AOP happens when java class loader loads classes files into JVM
+* Compile time weaving happens when javac compiles .java into .class
+* Post-compile weaving happens to .class files
+* runtime weaving happens in JVM (after class loader has loaded .classes files into JVM)
