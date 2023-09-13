@@ -73,7 +73,10 @@ Couple of comparisons
 * Java source code will be compiled by javac(java compiler) into .class hexadecimal files
 * Java Runtime Environment (JRE) will take .class files. Classloader loads classes into JVM in runtime
 * We all know static fields are stored into JVM heap instead of stack (each thread has its own stack) memory
-* Static fields points to the same reference in heap, however there is no guarantee of the visibility for all threads to see the changes
+* Even within threads, thread creates local objects, which are only visible to themselves. Note that these local objects also stored in heap instead of stack
+* Thread maintains a reference in stack pointing to the actual object in heap
+* Java garbage collection scans heap memory and cleans objects that are no longer referenced
+* Static fields points to the same reference in heap, and therefore multiple threads accessing same static class/method/fields might cause race condition. However there is no guarantee of the visibility for all threads to see the changes
 * java volatile is used to make sure data is written into main memory and visibility to all threads
 
 ### Weaving
