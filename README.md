@@ -1,5 +1,17 @@
 # LearningSummary
 
+## Index
+[Sql vs NoSql](https://github.com/Danny7226/LearningSummary#sql-vs-nosql)
+[Hash Ring](https://github.com/Danny7226/LearningSummary#hash-ring)
+[B+ tree](https://github.com/Danny7226/LearningSummary#b-tree)
+[Spring MVC](https://github.com/Danny7226/LearningSummary#spring-mvc)
+[Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary#service-discovery-vs-load-balancer)
+[Spring transactional](https://github.com/Danny7226/LearningSummary#spring-transactional)
+[Java memory model](https://github.com/Danny7226/LearningSummary#java-memory-model)
+[Weaving](https://github.com/Danny7226/LearningSummary#weaving)
+[Dynamic proxy JDK](https://github.com/Danny7226/LearningSummary#dynamic-proxy-jdk)
+
+## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
 
@@ -69,7 +81,8 @@ Couple of comparisons
 * Load-time weaving keeps source code free of aspect related code (so that LTW are used at certain time not all time, say performance monitoring and debugging runtime) https://github.com/indrabasak/spring-loadtime-weaving-example
 * Usually config files are load-time-weaving enabled (***needs to do more research***)
 
-### Dynamic proxy JDK
+### Dynamic proxy JDK vs CGLib
 * Proxy patten use case is for access control, such as auth, throttle, delegation, and not about changing behaviors
 * Dynamic proxies differ from static proxies in a way that they do not exist at compile time. Instead, they are generated at runtime by the JDK and then made available to the users at runtime
-* Spring AOP weaving use JDK dynamic proxy by default. A proxy implements the interface of the target objects and delegate method calls
+* Spring AOP weaving use JDK dynamic proxy by default. It creates a proxy implements the interface of the target objects and delegate method calls (this requires target object implements an interface)
+* CGlib creates proxy by subclassing (extends). Because of this, class or methods should not be final 
