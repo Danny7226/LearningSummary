@@ -2,14 +2,23 @@
 
 ## Index
 [Sql vs NoSql](https://github.com/Danny7226/LearningSummary#sql-vs-nosql)
+
 [Hash Ring](https://github.com/Danny7226/LearningSummary#hash-ring)
+
 [B+ tree](https://github.com/Danny7226/LearningSummary#b-tree)
+
 [Spring MVC](https://github.com/Danny7226/LearningSummary#spring-mvc)
+
 [Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary#service-discovery-vs-load-balancer)
+
 [Spring transactional](https://github.com/Danny7226/LearningSummary#spring-transactional)
+
 [Java memory model](https://github.com/Danny7226/LearningSummary#java-memory-model)
+
 [Weaving](https://github.com/Danny7226/LearningSummary#weaving)
+
 [Dynamic proxy JDK](https://github.com/Danny7226/LearningSummary#dynamic-proxy-jdk)
+
 
 ## Topics
 ### Sql vs NoSql
