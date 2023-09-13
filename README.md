@@ -48,12 +48,28 @@ Couple of comparisons
 * TBD
 
 ### Java memory model 
+* https://medium.com/platform-engineer/understanding-java-memory-model-1d0863f6d973
 * Java source code will be compiled by javac(java compiler) into .class hexadecimal files
 * Java Runtime Environment (JRE) will take .class files. Classloader loads classes into JVM in runtime
 * We all know static fields are stored into JVM heap instead of stack (each thread has its own stack) memory
 * Static fields points to the same reference in heap, however there is no guarantee of the visibility for all threads to see the changes
 * java volatile is used to make sure data is written into main memory and visibility to all threads
-* Load-time weaving in AOP happens when java class loader loads classes files into JVM
+
+### Weaving
+* Weaving is a technical to manipulate byte-code java classes in JVM 
 * Compile time weaving happens when javac compiles .java into .class
 * Post-compile weaving happens to .class files
-* runtime weaving happens in JVM (after class loader has loaded .classes files into JVM)
+* Load-time weaving in AOP happens when java class loader loads classes files into JVM
+* Runtime weaving happens in JVM (after class loader has loaded .classes files into JVM). (***Quesiton, relation to java agent?***) 
+* Spring AOP uses a proxy based runtime weaving
+* Compile time weaving cannot defer decision in runtime, but is better to debug to know problems fast
+* Post-compile weaving works well with 3rd party code, which developers don't have source code of in general
+* Load-time weaving introduce extra overhead when JVM/application starts up, or server spins up (as class loader needs to spend extra time to weave when loading classes into JVM)
+* However, LTW provides feasibility to decide if/what to weave
+* Load-time weaving keeps source code free of aspect related code (so that LTW are used at certain time not all time, say performance monitoring and debugging runtime) https://github.com/indrabasak/spring-loadtime-weaving-example
+* Usually config files are load-time-weaving enabled (***needs to do more research***)
+
+### Dynamic proxy JDK
+* Proxy patten use case is for access control, such as auth, throttle, delegation, and not about changing behaviors
+* Dynamic proxies differ from static proxies in a way that they do not exist at compile time. Instead, they are generated at runtime by the JDK and then made available to the users at runtime
+* Spring AOP weaving use JDK dynamic proxy by default. A proxy implements the interface of the target objects and delegate method calls
