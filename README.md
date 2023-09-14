@@ -1,5 +1,7 @@
 # LearningSummary
 
+Science and engineering are means of spiritual development. Precisely identifies the problem allows me to precisely recognize this world
+
 ## Index
 [Sql vs NoSql](https://github.com/Danny7226/LearningSummary#sql-vs-nosql)
 
@@ -19,7 +21,7 @@
 
 [Dynamic proxy JDK](https://github.com/Danny7226/LearningSummary#dynamic-proxy-jdk)
 
-[Tomcat, java EE, java servlet, and socket]()
+[Tomcat, java EE, java servlet, and socket](https://github.com/Danny7226/LearningSummary#tomcat-java-ee-java-servlet-and-socket)
 
 ## Topics
 ### Sql vs NoSql
