@@ -70,8 +70,11 @@ Couple of comparisons
 
 ### Java memory model 
 * https://medium.com/platform-engineer/understanding-java-memory-model-1d0863f6d973
-* Java source code will be compiled by javac(java compiler) into .class hexadecimal files
+* Java source code will be compiled by javac(java compiler) into .class files
+* .class files are data in bytecode format in binary. People might think it's hexadecimal, but it's actually not. Hexadecimal representation is just a way of viewing binary data
 * Java Runtime Environment (JRE) will take .class files. Classloader loads classes into JVM in runtime
+* Classloader doesn't change the format of data, it simply loads files into memory
+* Bytecode is platform independent, meaning it can be executed in any compatible JVM platforms. (Windows, Linux, OSX have different implementations of JVM, JVM acts as an abstract layer between bytecode and hardware OS)
 * We all know static fields are stored into JVM heap instead of stack (each thread has its own stack) memory
 * Even within threads, thread creates local objects, which are only visible to themselves. Note that these local objects also stored in heap instead of stack
 * Thread maintains a reference in stack pointing to the actual object in heap
