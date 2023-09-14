@@ -19,6 +19,7 @@
 
 [Dynamic proxy JDK](https://github.com/Danny7226/LearningSummary#dynamic-proxy-jdk)
 
+[Tomcat, java EE, java servlet, and socket]()
 
 ## Topics
 ### Sql vs NoSql
@@ -100,4 +101,16 @@ Couple of comparisons
 * Proxy patten use case is for access control, such as auth, throttle, delegation, and not about changing behaviors
 * Dynamic proxies differ from static proxies in a way that they do not exist at compile time. Instead, they are generated at runtime by the JDK and then made available to the users at runtime
 * Spring AOP weaving use JDK dynamic proxy by default. It creates a proxy implements the interface of the target objects and delegate method calls (this requires target object implements an interface)
-* CGlib creates proxy by subclassing (extends). Because of this, class or methods should not be final 
+* CGlib creates proxy by subclassing (extends). Because of this, class or methods should not be final
+
+
+### Tomcat, java EE, java servlet, and socket
+* Apache tomcat is a web server and java servlet container (servlet engine)
+* Apache tomcat is not directly built upon java ee, but java se (standard edition)
+* However, most application build web application by deploying WAR (web application archive) onto tomcat servlet engine
+* Servlet is simply a java class that deals with http request and gives http response
+* Java servlet is not directly communicating with java socket. Instead, tomcat (servlet enginer) directly uses java socket listening to a port to establish network transmission
+* Tomcat (servlet contain) manages java servlet lifecycles, dispatch requests into appropriate servlet. Servelet can generate HTML, execute logic, access DB and etc
+* Java socket fits into transport layer in OSI model (layer 4), socket is a software object representing an IP + port number
+* Port is a logical entity. Port, along with IP, uniquely identifies the destination (endpoint) for a data packets in network
+
