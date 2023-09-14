@@ -13,7 +13,7 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary#service-discovery-vs-load-balancer)
 
-[Spring transactional](https://github.com/Danny7226/LearningSummary#spring-transactional)
+[Transaction and lock](https://github.com/Danny7226/LearningSummary#transaction-and-lock)
 
 [Java memory model](https://github.com/Danny7226/LearningSummary#java-memory-model)
 
@@ -68,8 +68,16 @@ Couple of comparisons
 * Service discovery provides ability to provide client cache
 * load balancer acts as dispatcher to dispatch requests to servers to make node addition/deletion easier
 
-### Spring transactional
-* TBD
+### Transaction and locking
+* Optimistic locking, locks are placed automatically when data is about to save
+* In DynamoDB, optimistic lock is achieved by version attribute to detect whether a data is modified prior to updating it
+* Pessimistic locking, locks are placed automatically when data are getting processed
+* In order to help understand Pessimistic lock, one example is JPA
+  * JPA provides PESSIMISTIC_READ to maintain a shard lock, where data can be read when someone helds a shard lock
+  * PESSIMISTIC_WRITE provides an exclusive lock where data cannot be READ, WRITE, UPDATE
+  * PESSIMISTIC_FORCE_INCREMENT provides a similar exclusive lock, where data version entity will be incremented afterwards
+* Explicit Locking, locks are placed manually
+* Reference https://www.baeldung.com/jpa-pessimistic-locking
 
 ### Java memory model 
 * https://medium.com/platform-engineer/understanding-java-memory-model-1d0863f6d973
@@ -95,8 +103,9 @@ Couple of comparisons
 * Compile time weaving cannot defer decision in runtime, but is better to debug to know problems fast
 * Post-compile weaving works well with 3rd party code, which developers don't have source code of in general
 * Load-time weaving introduce extra overhead when JVM/application starts up, or server spins up (as class loader needs to spend extra time to weave when loading classes into JVM)
-* However, LTW provides feasibility to decide if/what to weave
+* However, LTW provides feasibility to decide if/what to weave, and bytecode can be manipulated without change source code
 * Load-time weaving keeps source code free of aspect related code (so that LTW are used at certain time not all time, say performance monitoring and debugging runtime) https://github.com/indrabasak/spring-loadtime-weaving-example
+* LTW fine-grained control on when and where to apply aspects
 * Usually config files are load-time-weaving enabled (***needs to do more research***)
 
 ### Dynamic proxy JDK vs CGLib
@@ -115,4 +124,3 @@ Couple of comparisons
 * Tomcat (servlet contain) manages java servlet lifecycles, dispatch requests into appropriate servlet. Servelet can generate HTML, execute logic, access DB and etc
 * Java socket fits into transport layer in OSI model (layer 4), socket is a software object representing an IP + port number
 * Port is a logical entity. Port, along with IP, uniquely identifies the destination (endpoint) for a data packets in network
-
