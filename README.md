@@ -72,6 +72,7 @@ Couple of comparisons
 * Optimistic locking, locks are placed automatically when data is about to save
 * In DynamoDB, optimistic lock is achieved by version attribute to detect whether a data is modified prior to updating it
 * Pessimistic locking, locks are placed automatically when data are getting processed
+  * DynamoDB's transaction is based on pessimistic locking 
 * In order to help understand Pessimistic lock, one example is JPA
   * JPA provides PESSIMISTIC_READ to maintain a shard lock, where data can be read when someone helds a shard lock
   * PESSIMISTIC_WRITE provides an exclusive lock where data cannot be READ, WRITE, UPDATE
@@ -124,3 +125,9 @@ Couple of comparisons
 * Tomcat (servlet contain) manages java servlet lifecycles, dispatch requests into appropriate servlet. Servelet can generate HTML, execute logic, access DB and etc
 * Java socket fits into transport layer in OSI model (layer 4), socket is a software object representing an IP + port number
 * Port is a logical entity. Port, along with IP, uniquely identifies the destination (endpoint) for a data packets in network
+
+### Fallback vs Circuit Breaker
+* Fallback provides alternative behavior for a graceful degradation
+* Circuit breaker is a mechanism prevents resource exhaustion from repetitive calls to a failing component by introducing CLOSED, OPEN, HALF_OPEN states
+* Circuit breaker and fallback are usually used together
+* Circuit breaker can be often used in the ServiceClientConfig, concept are but not limited to timeout, retry
