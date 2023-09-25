@@ -100,7 +100,7 @@ Couple of comparisons
 * Post-compile weaving happens to .class files
 * Load-time weaving in AOP happens when java class loader loads classes files into JVM
 * Runtime weaving happens in JVM (after class loader has loaded .classes files into JVM). (***Quesiton, relation to java agent?***) 
-* Spring AOP uses a proxy based runtime weaving
+* Spring AOP uses a proxy based runtime weaving, and it uses java reflection fundamentally
 * Compile time weaving cannot defer decision in runtime, but is better to debug to know problems fast
 * Post-compile weaving works well with 3rd party code, which developers don't have source code of in general
 * Load-time weaving introduce extra overhead when JVM/application starts up, or server spins up (as class loader needs to spend extra time to weave when loading classes into JVM)
