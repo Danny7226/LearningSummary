@@ -23,6 +23,8 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [Tomcat, java EE, java servlet, and socket](https://github.com/Danny7226/LearningSummary#tomcat-java-ee-java-servlet-and-socket)
 
+[Fallback vs Circuit Breaker]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
