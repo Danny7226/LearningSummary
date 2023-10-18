@@ -25,6 +25,8 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [Fallback vs Circuit Breaker](https://github.com/Danny7226/LearningSummary/tree/main#fallback-vs-circuit-breaker)
 
+[Multiple dispatch](https://github.com/Danny7226/LearningSummary#multiple-dispatch)
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -148,10 +150,6 @@ Couple of comparisons
           this.destroy();
           against.destroy();
         }   
-  }
-  
-  class Subway implements Platform {
-
   }
     
   // this is the application code
