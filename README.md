@@ -23,7 +23,7 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [Tomcat, java EE, java servlet, and socket](https://github.com/Danny7226/LearningSummary#tomcat-java-ee-java-servlet-and-socket)
 
-[Fallback vs Circuit Breaker]()
+[Fallback vs Circuit Breaker](https://github.com/Danny7226/LearningSummary/tree/main#fallback-vs-circuit-breaker)
 
 ## Topics
 ### Sql vs NoSql
@@ -133,3 +133,51 @@ Couple of comparisons
 * Circuit breaker is a mechanism prevents resource exhaustion from repetitive calls to a failing component by introducing CLOSED, OPEN, HALF_OPEN states
 * Circuit breaker and fallback are usually used together
 * Circuit breaker can be often used in the ServiceClientConfig, concept are but not limited to timeout, retry
+
+### Multiple dispatch
+* Multiple dispatch is a pattern of some object-oriented programming languages, where the resolution of a method call depends on types of multiple Objects
+* Visitor pattern utilizes double dispatch
+* Collision in single-dispatch fashion
+  ```agsl
+  class Bus extends Car implements Collapsable {
+    collapseWith(Collapsable against) {
+        if (against instanceOf Platform)
+          this.destroy();
+          against.survive();
+        } else if (against InstanceOf Car) {
+          this.destroy();
+          against.destroy();
+        }   
+  }
+  
+  class Subway implements Platform {
+
+  }
+    
+  // this is the application code
+  bus.collapseWith(subway);
+  ```
+* For scenarios where resolution of a method depends on the characteristics of 2 objects, double-dispatch fashion provides a cleaner and better-organized program
+   ```agsl
+    class Bus extends Car implements Collapsable {
+      collapseWith(Collapsable against) {
+        this.destroy();
+        against.collapseWith(this);
+    }
+  
+    class Subway implements Platform {
+        collapseWith(Car car) {
+            this.survive();
+            // log car and etc.
+        }
+  
+        collapseWith(Platform platform) {
+            this.destroy();
+            // log car and etc.
+        }
+    }
+    
+    // this is the application code
+    bus.collapseWith(subway);
+    subway.collapseWith(subway)
+    ```
