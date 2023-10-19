@@ -184,7 +184,7 @@ Couple of comparisons
   
 ### A/B testing dial up
 * Client-Id will be hashed to provide uniform distribution and then mapped to a range to determine which treatment to apply
-* Client-Id will always to mapped to the same position in the range as long as hashing and mapping algorithm doesn't change, which shouldn't
+* Client-Id will always to mapped to the same bucket in the range as long as hashing and mapping algorithm doesn't change, which shouldn't
 * Pre-analysis exposure might happen during gradually dial-up
 * Clean dial up
   * When dialing-up gradually, the mixed treatment clients are often hard to analysis cuz they maybe become ineligible for the pre-exposure
@@ -196,3 +196,15 @@ Couple of comparisons
     * This makes sure a certain customer will never be treated differently during dial-up
     * We can gradually dial up the exposure percentage (from 10 - 100%), instead of control/treatment ratio
     * And then, we only analyze people that fall in the gating treatment scope. And each individual client will be treated consistently
+
+### HashMap
+* HashMap uses array and linkedlist fundamentally to implement
+* When the size of a linkedlist goes greater than 8, HashMap will expand array size up to 64 first
+* If size of the HashMap array is greater than 64 (2^6), and size of linkedlist is greater than 8 (2^3), HashMap will treeify LinkedList into red/black tree
+* Red/Black tree is optimized than AVL (balanced-binary search tree) in the sense of faster insertion and removal operations (but takes more memory as a tradeoff)
+* AVL is a good data-structure in memory, whereas B tree (m-way search tree) is good for disk data storage
+* Define exp(x,y) means x to the power of y
+  * Size of HashMap is exp(2,x), instead of an arbitrary integer. The reason for this is there is an `(n-1) & hash` operation to determine which index/bucket to put data in the array.
+  * if size is in the form of exp(2,x), mod operation is fast as it can be calculated with bit operation
+
+###
