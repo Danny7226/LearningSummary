@@ -27,6 +27,8 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [Multiple dispatch](https://github.com/Danny7226/LearningSummary#multiple-dispatch)
 
+[A/B testing dial up](https://github.com/Danny7226/LearningSummary#ab-testing-dial-up)
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -166,12 +168,12 @@ Couple of comparisons
     class Subway implements Platform {
         collapseWith(Car car) {
             this.survive();
-            // log car and etc.
+            // ...log car and etc.
         }
   
         collapseWith(Platform platform) {
             this.destroy();
-            // log car and etc.
+            // ...log platform and etc.
         }
     }
     
@@ -181,7 +183,7 @@ Couple of comparisons
     ```
   
 ### A/B testing dial up
-* Client-Id will be hashed to provide uniformly distribution and then mapped to a range to determine which treatment to apply
+* Client-Id will be hashed to provide uniform distribution and then mapped to a range to determine which treatment to apply
 * Client-Id will always to mapped to the same position in the range as long as hashing and mapping algorithm doesn't change, which shouldn't
 * Pre-analysis exposure might happen during gradually dial-up
 * Clean dial up
@@ -190,6 +192,7 @@ Couple of comparisons
   * This mixed treatment might not be a noise when dialing-up is purely to test the software functional integrity
   * But when it comes to business analysis, mixed treatment often cause a great noise
   * Instead of dialing up treatment percentage, we could use exposure control, which is essentially another A/B testing gate in front of our main A/B testing
-  * What it does it, it will choose certain percentage of customers (say 10 percent) in the experiment, and then apply the control/treatment ration to this 10% customers
+  * What it does is, it will choose certain percentage of customers (say 10 percent) in the experiment, and then apply the control/treatment ratio to this 10% customers
     * This makes sure a certain customer will never be treated differently during dial-up
     * We can gradually dial up the exposure percentage (from 10 - 100%), instead of control/treatment ratio
+    * And then, we only analyze people that fall in the gating treatment scope. And each individual client will be treated consistently
