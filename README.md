@@ -179,3 +179,17 @@ Couple of comparisons
     bus.collapseWith(subway);
     subway.collapseWith(subway)
     ```
+  
+### A/B testing dial up
+* Client-Id will be hashed to provide uniformly distribution and then mapped to a range to determine which treatment to apply
+* Client-Id will always to mapped to the same position in the range as long as hashing and mapping algorithm doesn't change, which shouldn't
+* Pre-analysis exposure might happen during gradually dial-up
+* Clean dial up
+  * When dialing-up gradually, the mixed treatment clients are often hard to analysis cuz they maybe become ineligible for the pre-exposure
+    * Say control/treatment ratio dial up from 9:1 to 5:5. Certain clients will be treated in control first, but then fall into treatment category
+  * This mixed treatment might not be a noise when dialing-up is purely to test the software functional integrity
+  * But when it comes to business analysis, mixed treatment often cause a great noise
+  * Instead of dialing up treatment percentage, we could use exposure control, which is essentially another A/B testing gate in front of our main A/B testing
+  * What it does it, it will choose certain percentage of customers (say 10 percent) in the experiment, and then apply the control/treatment ration to this 10% customers
+    * This makes sure a certain customer will never be treated differently during dial-up
+    * We can gradually dial up the exposure percentage (from 10 - 100%), instead of control/treatment ratio
