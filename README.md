@@ -31,6 +31,10 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [HashMap](https://github.com/Danny7226/LearningSummary#hashmap)
 
+[Distributed Web Application quick roll-out](https://github.com/Danny7226/LearningSummary#distributed-web-application-quick-roll-out)
+
+[Double-checked lock]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -80,7 +84,9 @@ Couple of comparisons
 * Optimistic locking, locks are placed automatically when data is about to save
 * In DynamoDB, optimistic lock is achieved by version attribute to detect whether a data is modified prior to updating it
 * Pessimistic locking, locks are placed automatically when data are getting processed
-  * DynamoDB's transaction is based on pessimistic locking 
+  * DynamoDB's transaction is based on pessimistic locking
+  * Optimistic locking is preferred for read-heavy situation to avoid race, deadlock, and un-necessary lock gaining and release
+  * Pessimistic locking is preferred for write-heavy situation to avoid constant re-try
 * In order to help understand Pessimistic lock, one example is JPA
   * JPA provides PESSIMISTIC_READ to maintain a shard lock, where data can be read when someone helds a shard lock
   * PESSIMISTIC_WRITE provides an exclusive lock where data cannot be READ, WRITE, UPDATE
@@ -222,3 +228,27 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
 9. Caching: Employed to reduce repetitive IO load on the database by storing frequently accessed data.
 10. Asynchronous Data Processing: Depending on your business needs, asynchronous or event-driven data processing mechanisms can be vital. Queueing service providers ensure strong message delivery consistency and robust failure handling and recovery. Streaming services are preferred for high throughput, with a focus on shard-level processing.
 11. Proxy to internal data/Data Plane APIs: To tunnel into internal dependencies, who have the data you need, in order to support business experience.
+
+### Double-checked lock
+* To reduce lock overload and achieve lazy initialization
+* First if check is to prevent constantly gaining and releasing lock
+* Second if check is to make sure actually un-assignment after gaining lock
+* `synchronized` is to make sure `allocate memory` `construct object` `assign object to memory` are atomic
+  * if not atomic, memory might be allocated but object not assigned
+  * another thread might return memory with unassigned object, which might result in error
+* `volatile` is necessary as instance state needs to be visible to all threads
+  * If initialization made by thread A is not visible, thread B might override initialization.
+```agsl
+Class LazyInitialization {
+    private volatile static LazyInitialization instance;
+    public static getInstance() {
+        if (instance == null) {
+            synchronized(LazyInitialization.class) {
+                if (instance == null) {
+                    instance = new LazyInitialization();
+                }
+            }
+        }
+    }
+}
+```
