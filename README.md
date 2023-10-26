@@ -33,7 +33,7 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [Distributed Web Application quick roll-out](https://github.com/Danny7226/LearningSummary#distributed-web-application-quick-roll-out)
 
-[Double-checked lock]()
+[Double-checked lock](https://github.com/Danny7226/LearningSummary#double-checked-lock)
 
 ## Topics
 ### Sql vs NoSql
@@ -82,6 +82,10 @@ Couple of comparisons
 
 ### Transaction and locking
 * Optimistic locking, locks are placed automatically when data is about to save
+  * CAS (compare and swap) concept is used in optimistic locking
+  * CAS is introduced to make sure a thread updating a shared memory would fail if the shared memory has been updated to another
+  * CAS has ABA problem, meaning even comparedValue and expectedValue are the same, doesn't mean it has not been updated
+  * VersionNumber/TimeStamp is often used along with CAS to achieve optimistic locking
 * In DynamoDB, optimistic lock is achieved by version attribute to detect whether a data is modified prior to updating it
 * Pessimistic locking, locks are placed automatically when data are getting processed
   * DynamoDB's transaction is based on pessimistic locking
@@ -231,9 +235,10 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
 
 ### Double-checked lock
 * To reduce lock overload and achieve lazy initialization
-* First if check is to prevent constantly gaining and releasing lock
-* Second if check is to make sure actually un-assignment after gaining lock
+* First `if` check is to prevent constantly gaining and releasing lock
+* Second `if` check is to make sure actually un-assignment after gaining lock
 * `synchronized` is to make sure `allocate memory` `construct object` `assign object to memory` are atomic
+  * Reason for this is, `new Object()` is not atomic 
   * if not atomic, memory might be allocated but object not assigned
   * another thread might return memory with unassigned object, which might result in error
 * `volatile` is necessary as instance state needs to be visible to all threads
@@ -248,7 +253,11 @@ Class LazyInitialization {
                     instance = new LazyInitialization();
                 }
             }
+        } else {
+            return instance;
         }
     }
 }
 ```
+
+### 
