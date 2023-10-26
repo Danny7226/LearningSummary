@@ -1,6 +1,6 @@
 # LearningSummary
 
-Science and engineering are means of spiritual development. Precisely identifies the problem allows me to precisely recognize this world
+Science and engineering are means of spiritual development. Precisely identifying the problem allows me to precisely recognize this world
 
 ## Index
 [Sql vs NoSql](https://github.com/Danny7226/LearningSummary#sql-vs-nosql)
@@ -259,5 +259,8 @@ Class LazyInitialization {
     }
 }
 ```
+* `synchronized void method() {}` lock an object instance
+* `synchronized static void method() {}` locks the whole class (all instances of this class)
+* `synchronized(this)` locks an object, `synchronized(A.class)` locks the whole class
 
 ### 
