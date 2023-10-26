@@ -29,6 +29,8 @@ Science and engineering are means of spiritual development. Precisely identifies
 
 [A/B testing dial up](https://github.com/Danny7226/LearningSummary#ab-testing-dial-up)
 
+[HashMap](https://github.com/Danny7226/LearningSummary#hashmap)
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -207,4 +209,16 @@ Couple of comparisons
   * Size of HashMap is exp(2,x), instead of an arbitrary integer. The reason for this is there is an `(n-1) & hash` operation to determine which index/bucket to put data in the array.
   * if size is in the form of exp(2,x), mod operation is fast as it can be calculated with bit operation
 
-###
+### Distributed Web Application quick roll-out
+https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
+1. Web-Based Security Firewall: To safeguard against common web threats like XSS and SQL injection, as well as to manage throttling and domain-specific traffic control.
+2. Content Delivery Network (CDN): Serving as an edge caching and redirection solution, it can vend static assets for your application's frontend, cache responses, and define redirect behaviours.
+3. DNS Routing: Utilized to route domain names to actual IP addresses for further request processing.
+4. Mediator Gateway: Acting as a mediator layer to reduce chaotic dependency relationships, often integrated with an aspect layer of authentication and authorization, delegated to third-party providers.
+5. Load Balancing: For distributing traffic among distributed web servers, with delicate routing principles for even traffic distribution and geographic-based routing.
+6. Docker management: for orchestrating docker images, facilitating horizontal scaling, rollback, and recovery. Also provides an extra layer of abstraction for smooth migration towards other platforms.
+7. Database: Even you don’t own the critical data you need, a database is still necessary to persist top-level entity configurations through some control plane APIs
+8. Encryption Management: Emphasizing client-side and server-side encryption for secure data protection.
+9. Caching: Employed to reduce repetitive IO load on the database by storing frequently accessed data.
+10. Asynchronous Data Processing: Depending on your business needs, asynchronous or event-driven data processing mechanisms can be vital. Queueing service providers ensure strong message delivery consistency and robust failure handling and recovery. Streaming services are preferred for high throughput, with a focus on shard-level processing.
+11. Proxy to internal data/Data Plane APIs: To tunnel into internal dependencies, who have the data you need, in order to support business experience.
