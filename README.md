@@ -263,4 +263,10 @@ Class LazyInitialization {
 * `synchronized static void method() {}` locks the whole class (all instances of this class)
 * `synchronized(this)` locks an object, `synchronized(A.class)` locks the whole class
 
-### 
+### CICD (Continuous integration continuous deployment)
+* feature dial up can be done by both CICD or weblab
+* CICD provides automatic rollback through continuous deployment but requires all changes of feature roll-in one-box stage at once
+  * Usually requires a separate git branch to store all features and resolve conflict at once
+* weblab provides ability to merge commits to mainline to production while hiding feature code behind a feature flag
+* CICD is more useful when during daily maintenance and small feature roll-out
+* Weblab is more useful when doing big feature launch since weblab dial-up/down is faster than code deployment
