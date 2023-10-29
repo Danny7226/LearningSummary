@@ -35,6 +35,10 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Double-checked lock](https://github.com/Danny7226/LearningSummary#double-checked-lock)
 
+[Continuous integration continuous deployment](https://github.com/Danny7226/LearningSummary#cicd-continuous-integration-continuous-deployment)
+
+[Redis cache & hot key]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -270,3 +274,19 @@ Class LazyInitialization {
 * weblab provides ability to merge commits to mainline to production while hiding feature code behind a feature flag
 * CICD is more useful when during daily maintenance and small feature roll-out
 * Weblab is more useful when doing big feature launch since weblab dial-up/down is faster than code deployment
+
+### Redis cache & Hot key
+* Use write read node to deal with different operations (replica)
+* Use cluster of nodes to distribute hot keys into multiple nodes (re-partition data)
+* Move hot key data into higher level cache, such as JVM memory
+* Cache Penetration (invalid key request land on database)
+  * Set up invalid key cache
+  * Valid request and return in application layer (request field range, format and etc)
+* Cache Hotspot Invalid (Hot key request all land on database as cache got invalid all of a sudden)
+  * Pre-heat data into cache before hot situation
+  * Set long TTL for hot key
+  * Setup exclusive lock for hot key in application layer
+* Cache avalanche (large amount of hot key get invalid in short amount of time)
+  * Use clusters to avoid single point of failure
+  * Set different ttl for hot keys so that hot key cache won't be invalid all at once
+  * L2 cache in JVM memory
