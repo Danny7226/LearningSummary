@@ -37,7 +37,9 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Continuous integration continuous deployment](https://github.com/Danny7226/LearningSummary#cicd-continuous-integration-continuous-deployment)
 
-[Redis cache & hot key]()
+[Redis cache & hot key](https://github.com/Danny7226/LearningSummary#redis-cache--hot-key)
+
+[Linux cmd]()
 
 ## Topics
 ### Sql vs NoSql
@@ -290,3 +292,30 @@ Class LazyInitialization {
   * Use clusters to avoid single point of failure
   * Set different ttl for hot keys so that hot key cache won't be invalid all at once
   * L2 cache in JVM memory
+
+### Linux cmd
+* `ls -l`: long list
+* `ls -li`: long list with inode
+* `ls -lih`: h means in size human readable manner
+* `du -sh .`: disk usage, `s`: summary, `h`: human readable
+* `df -h`: disk free, check disk info for current mounted file systems
+* `inode`: is the index of each file, is unique within each file system
+  * In linux, everything is considered as a file
+* File types
+  * -: regular file
+  * d: directory
+  * l: link file
+  * s: socket file, for network
+* `chmod 744 {filename.surfix}` = `chmod ugo+rwx` = `chmod a+rw` = `chmod +rwx`
+  * `r`: read, `w`: write, `x`: execute
+  * `u`: user, `g`: group, `o`: others, `a`: all
+  * 7 in bits `111`
+    * read: 4 `100`, write: 2 `010`, execute 1 `001`
+    * 764 means, user: 7 (rwx), group 6 (rw), others 4 (read)
+* File link
+  * Hard link: points to the actual data, data will only be deleted when all inode deleted
+    * Cannot cross file systems as inode would be the same for hard linked files, and each file system has their own inode management 
+    * `ln {originalFile} {newFile}`
+  * Soft link: creates a link points a file to another file
+    * Can cross file systems
+    * `ln -s`
