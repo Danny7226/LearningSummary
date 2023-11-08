@@ -45,7 +45,7 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Version and Release Management](https://github.com/Danny7226/LearningSummary/tree/main#version-and-release-management)
 
-[How Dynamo handles hot partitions](https://github.com/Danny7226/LearningSummary/tree/main#how-dynamo-handles-hot-partitions)
+[Dynamo && how it handles hot partitions]()
 
 ## Topics
 ### Sql vs NoSql
@@ -333,7 +333,7 @@ Class LazyInitialization {
 
 ### Version and Release Management
 
-### How Dynamo handles hot partitions
+### Dynamo && how it handles hot partitions
 * Dynamo db has a structure of { partition router => partitions[1, 2, 3...] }
 * By default, Dynamo enables 3000 RCU and 1000 WCU per sec per partition node
 * At max, 10 GB per partition and 400kb per item, (25000 items per partition)
@@ -346,3 +346,12 @@ Class LazyInitialization {
   * Keep in mind, adaptive capacity cannot exceed table's provisioned capacity or partition's maximum capacity (3000 RCU and 1000 WCU)
   * Dynamo will not re-shuffle item collections across multiple partitions if there is an LSI (local secondary index)
 * Reference [this](https://deeptimittalblogger.medium.com/dynamodb-data-partitioning-is-the-secret-sauce-c810eb9f80ca)
+* Dynamo has LSI and GSI.
+  * LSI and GSI are essentially copies of data from main table
+  * LSI has to be specified during table creation and cannot be added to an existing table
+    * This is because LSI are sort keys within partitions, and to maintain data in sorted order for easy adjacent access
+  * GSI can be added any time as they are essentially partitions
+* Dynamo supports 3 ways to modify its entities
+  * Rest API
+  * SDK for many program languages
+  * CLI
