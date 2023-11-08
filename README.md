@@ -39,11 +39,13 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Redis cache & hot key](https://github.com/Danny7226/LearningSummary#redis-cache--hot-key)
 
-[Linux cmd]()
+[Linux cmd](https://github.com/Danny7226/LearningSummary/tree/main#linux-cmd)
 
-[Throttling, token-bucket algorithm]()
+[Throttling, token-bucket algorithm](https://github.com/Danny7226/LearningSummary/tree/main#throttling-token-bucket-algorithm)
 
-[Version and Release Management]()
+[Version and Release Management](https://github.com/Danny7226/LearningSummary/tree/main#version-and-release-management)
+
+[How Dynamo handles hot partitions]()
 
 ## Topics
 ### Sql vs NoSql
@@ -330,3 +332,15 @@ Class LazyInitialization {
 * max_rate: the number of tokens to refill into the bucket when it's not full, it defines the throttling TPS
 
 ### Version and Release Management
+
+### How Dynamo handles hot partitions
+* Dynamo db has a structure of { partition router => partitions[1, 2, 3...] }
+* By default, Dynamo enables 3000 read operations and 1000 write operations per sec per partition node
+* At max, 10 GB per partition and 400kb per item, (25000 items per partition)
+* If partition has items more than 10GB, dynamo moves half of the data into another partition under the hood and maintain a mapping in the router
+* The above provisioned capacity will be evenly distributed onto each partition
+* Provisioned capacity can be achieved by separating write/read nodes, allocate replicas, applying master-replica nodes architecture
+* Instant adaptive capacity allows burst traffic not being throttled even exceeding partition throughput capacity
+  * When certain items becomes popular, Dynamo does a thing called 'isolate frequently accessed items'
+  * It basically rebalances the partitions so that one partition will be dedicatedly serving one particular hot item
+  * Keep in mind, adaptive capacity cannot exceed table's provisioned capacity or partition's maximum capacity (3000 RCU and 1000 WCU)
