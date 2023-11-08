@@ -41,6 +41,10 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Linux cmd]()
 
+[Throttling, token-bucket algorithm]()
+
+[Version and Release Management]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -319,3 +323,10 @@ Class LazyInitialization {
   * Soft link: creates a link points a file to another file
     * Can cross file systems
     * `ln -s`
+
+### Throttling, token-bucket algorithm
+* Each transaction/request takes one token away from the bucket
+* max_capacity: the total maximum number of token in the bucket, defines the burst rate
+* max_rate: the number of tokens to refill into the bucket when it's not full, it defines the throttling TPS
+
+### Version and Release Management
