@@ -45,7 +45,7 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Version and Release Management](https://github.com/Danny7226/LearningSummary/tree/main#version-and-release-management)
 
-[How Dynamo handles hot partitions]()
+[How Dynamo handles hot partitions](https://github.com/Danny7226/LearningSummary/tree/main#how-dynamo-handles-hot-partitions)
 
 ## Topics
 ### Sql vs NoSql
@@ -344,3 +344,4 @@ Class LazyInitialization {
   * When certain items becomes popular, Dynamo does a thing called 'isolate frequently accessed items'
   * It basically rebalances the partitions so that one partition will be dedicatedly serving one particular hot item
   * Keep in mind, adaptive capacity cannot exceed table's provisioned capacity or partition's maximum capacity (3000 RCU and 1000 WCU)
+  * Dynamo will not re-shuffle item collections across multiple partitions if there is an LSI (local secondary index)
