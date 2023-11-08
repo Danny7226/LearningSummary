@@ -335,13 +335,14 @@ Class LazyInitialization {
 
 ### How Dynamo handles hot partitions
 * Dynamo db has a structure of { partition router => partitions[1, 2, 3...] }
-* By default, Dynamo enables 3000 read operations and 1000 write operations per sec per partition node
+* By default, Dynamo enables 3000 RCU and 1000 WCU per sec per partition node
 * At max, 10 GB per partition and 400kb per item, (25000 items per partition)
-* If partition has items more than 10GB, dynamo moves half of the data into another partition under the hood and maintain a mapping in the router
 * The above provisioned capacity will be evenly distributed onto each partition
-* Provisioned capacity can be achieved by separating write/read nodes, allocate replicas, applying master-replica nodes architecture
+* If partition has items more than 10GB, dynamo moves half of the data into another partition under the hood and maintains a mapping in the router
+* Provisioned capacity, in general, can be achieved by separating write/read nodes, allocate replicas, applying master-replica nodes architecture
 * Instant adaptive capacity allows burst traffic not being throttled even exceeding partition throughput capacity
   * When certain items becomes popular, Dynamo does a thing called 'isolate frequently accessed items'
-  * It basically rebalances the partitions so that one partition will be dedicatedly serving one particular hot item
+  * It basically re-balances the partitions so that one partition will be dedicatedly serving one particular hot item
   * Keep in mind, adaptive capacity cannot exceed table's provisioned capacity or partition's maximum capacity (3000 RCU and 1000 WCU)
   * Dynamo will not re-shuffle item collections across multiple partitions if there is an LSI (local secondary index)
+* Reference [this](https://deeptimittalblogger.medium.com/dynamodb-data-partitioning-is-the-secret-sauce-c810eb9f80ca)
