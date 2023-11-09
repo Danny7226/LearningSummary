@@ -45,7 +45,9 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [Version and Release Management](https://github.com/Danny7226/LearningSummary/tree/main#version-and-release-management)
 
-[Dynamo && how it handles hot partitions]()
+[Dynamo && how it handles hot partitions](https://github.com/Danny7226/LearningSummary/tree/main#dynamo--how-it-handles-hot-partitions)
+
+[RFC 7231 HTTP 1.1]()
 
 ## Topics
 ### Sql vs NoSql
@@ -355,3 +357,11 @@ Class LazyInitialization {
   * Rest API
   * SDK for many program languages
   * CLI
+
+### RFC 7231 Hypertext transfer protocol HTTP 1.1
+* Cacheable method, methods that doesn't rely on authoritative response (source of truth)
+  * GET, HEAD, POST
+    * HEAD is faster than GET, is usually used to compare if the data has been changed since the last cached response
+      * This can be achieved by comparing the fixed-length Hash value of data
+      * Hash values are usually used in HTTP transmission to determine if the downloaded data has been modified or corrupted
+      * It's usually included in the Header, as HEAD method will cut off the message body and only sent headers back
