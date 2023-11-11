@@ -49,11 +49,11 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [RFC 7231 HTTP 1.1](https://github.com/Danny7226/LearningSummary/tree/main#rfc-7231-hypertext-transfer-protocol-http-11)
 
-[Reversed index]
+[Reversed index](https://github.com/Danny7226/LearningSummary#reversed-index)
 
-[Search service]
+[Search service](https://github.com/Danny7226/LearningSummary#search-service)
 
-[Data processing pipeline]
+[Data processing pipeline](https://github.com/Danny7226/LearningSummary#data-processing-pipeline)
 
 ## Topics
 ### Sql vs NoSql
