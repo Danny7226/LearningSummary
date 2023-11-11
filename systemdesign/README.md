@@ -1,19 +1,19 @@
 ## Index
 [Area of focus](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#area-of-focus)
 
-[Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary#service-discovery-vs-load-balancer)
+[Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#service-discovery-vs-load-balancer)
 
-[Distributed Web Application quick roll-out](https://github.com/Danny7226/LearningSummary#distributed-web-application-quick-roll-out)
+[Distributed Web Application quick roll-out](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#distributed-web-application-quick-roll-out)
 
-[Redis cache & hot key](https://github.com/Danny7226/LearningSummary#redis-cache--hot-key)
+[Redis cache & hot key](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#redis-cache--hot-key)
 
-[Dynamo && how it handles hot partitions](https://github.com/Danny7226/LearningSummary/tree/main#dynamo--how-it-handles-hot-partitions)
+[Dynamo && how it handles hot partitions](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main#dynamo--how-it-handles-hot-partitions)
 
-[Reversed index](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#reversed-index)
+[Reversed index](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main/systemdesign#reversed-index)
 
-[Search service](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#search-service)
+[Search service](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main/systemdesign#search-service)
 
-[Data processing pipeline](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#data-processing-pipeline)
+[Data processing pipeline](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main/systemdesign#data-processing-pipeline)
 
 ## System Design
 ### Area of focus
