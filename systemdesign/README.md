@@ -28,8 +28,8 @@
     * How much data each read/write
   * What is the performance of the system
     * what is the expectation of write-to-read delay
-      * If low delay, need to think async
-      * If high delay is permitted, batch or stream processing is allowed
+      * If low delay, need to think sync operations / stream processing (with in minutes)
+      * If high delay is permitted, batch is allowed (with in hours)
     * Latency
       * low latency required, means data needs to be aggregated
       * high latency permitted, means we could use query language (such as MySql) to query relational tables
@@ -43,7 +43,7 @@
         * getStat(videoId, eventType, func) // func: count, sum, avg
           * it goes even further and more abstract depends on what is considered as the top level entity of our system
       * the video is considered as the input entity, this is negotiable when we get to the domain data model to see what is the best fit here
-  * non-functional requirements are ones like fast, fault tolerant, SLA, secure
+  * non-functional requirements are ones like fast, fault tolerant, SLA, secure (CAP)
     * Scale (millions of TPS)
     * Performance (low latency, tens of milliseconds)
     * Availability (no single point of failure, survives hardware/network failure)
