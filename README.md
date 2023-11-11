@@ -49,12 +49,6 @@ Science and engineering are means of spiritual development. Precisely identifyin
 
 [RFC 7231 HTTP 1.1](https://github.com/Danny7226/LearningSummary/tree/main#rfc-7231-hypertext-transfer-protocol-http-11)
 
-[Reversed index](https://github.com/Danny7226/LearningSummary#reversed-index)
-
-[Search service](https://github.com/Danny7226/LearningSummary#search-service)
-
-[Data processing pipeline](https://github.com/Danny7226/LearningSummary#data-processing-pipeline)
-
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -371,23 +365,3 @@ Class LazyInitialization {
       * This can be achieved by comparing the fixed-length Hash value of data
       * Hash values are usually used in HTTP transmission to determine if the downloaded data has been modified or corrupted
       * It's usually included in the Header, as HEAD method will cut off the message body and only sent headers back
-
-### Reversed index
-* Reversed index or inverted index is contrast to forwarded index
-* instead of indexing the `key` in the data model, index `value` or keywords
-* Better for full context search
-
-### Search Service
-* Proxy
-  * Single entry to data center, provides load balancing, routing, monitoring, throttling, auth and various of benefits
-* Ingestion
-  * To avoid overwhelming load on data center
-  * have queue/stream and workers to process at its own speed, ease data center load, provide failure recovery
-* Back-fill
-  * large data lake back-fill is huge burden to data center
-  * Map reduce to break into smaller tasks and have workers working on them
-
-### Data processing pipeline
-* Ingesting
-* Scoping
-* Computing

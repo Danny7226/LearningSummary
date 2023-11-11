@@ -1,4 +1,14 @@
-### System Design
+## Index
+[Area of focus]()
+
+[Reversed index](https://github.com/Danny7226/LearningSummary#reversed-index)
+
+[Search service](https://github.com/Danny7226/LearningSummary#search-service)
+
+[Data processing pipeline](https://github.com/Danny7226/LearningSummary#data-processing-pipeline)
+
+## System Design
+### Area of focus
 * Ask for clarifications
   * Who is user/customer
     * What data system need
@@ -21,3 +31,23 @@
 * Put down functional and non-functional requirements accordingly
   * functional requirements are the APIs we are going to have
   * non-functional requirements are ones like fast, fault tolerant, SLA, secure
+
+### Reversed index
+* Reversed index or inverted index is contrast to forwarded index
+* instead of indexing the `key` in the data model, index `value` or keywords
+* Better for full context search
+
+### Search Service
+* Proxy
+    * Single entry to data center, provides load balancing, routing, monitoring, throttling, auth and various of benefits
+* Ingestion
+    * To avoid overwhelming load on data center
+    * have queue/stream and workers to process at its own speed, ease data center load, provide failure recovery
+* Back-fill
+    * large data lake back-fill is huge burden to data center
+    * Map reduce to break into smaller tasks and have workers working on them
+
+### Data processing pipeline
+* Ingesting
+* Scoping
+* Computing
