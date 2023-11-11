@@ -1,31 +1,31 @@
 ## Index
-[Sql vs NoSql](https://github.com/Danny7226/LearningSummary#sql-vs-nosql)
+[Sql vs NoSql](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#sql-vs-nosql)
 
-[Hash Ring](https://github.com/Danny7226/LearningSummary#hash-ring)
+[Hash Ring](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#hash-ring)
 
-[B+ tree](https://github.com/Danny7226/LearningSummary#b-tree)
+[B+ tree](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#b-tree)
 
-[Transaction and lock](https://github.com/Danny7226/LearningSummary#transaction-and-lock)
+[Transaction and lock](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#transaction-and-lock)
 
-[Fallback vs Circuit Breaker](https://github.com/Danny7226/LearningSummary/tree/main#fallback-vs-circuit-breaker)
+[Fallback vs Circuit Breaker](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#fallback-vs-circuit-breaker)
 
-[Multiple dispatch](https://github.com/Danny7226/LearningSummary#multiple-dispatch)
+[Multiple dispatch](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#multiple-dispatch)
 
-[A/B testing dial up](https://github.com/Danny7226/LearningSummary#ab-testing-dial-up)
+[A/B testing dial up](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#ab-testing-dial-up)
 
-[HashMap](https://github.com/Danny7226/LearningSummary#hashmap)
+[HashMap](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#hashmap)
 
-[Double-checked lock](https://github.com/Danny7226/LearningSummary#double-checked-lock)
+[Double-checked lock](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#double-checked-lock)
 
-[Continuous integration continuous deployment](https://github.com/Danny7226/LearningSummary#cicd-continuous-integration-continuous-deployment)
+[Continuous integration continuous deployment](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#cicd-continuous-integration-continuous-deployment)
 
-[Linux cmd](https://github.com/Danny7226/LearningSummary/tree/main#linux-cmd)
+[Linux cmd](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#linux-cmd)
 
-[Throttling, token-bucket algorithm](https://github.com/Danny7226/LearningSummary/tree/main#throttling-token-bucket-algorithm)
+[Throttling, token-bucket algorithm](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#throttling-token-bucket-algorithm)
 
-[RFC 7231 HTTP 1.1](https://github.com/Danny7226/LearningSummary/tree/main#rfc-7231-hypertext-transfer-protocol-http-11)
+[RFC 7231 HTTP 1.1](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#rfc-7231-hypertext-transfer-protocol-http-11)
 
-[Version and Release Management](https://github.com/Danny7226/LearningSummary/tree/main#version-and-release-management)
+[Version and Release Management](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#version-and-release-management)
 
 
 ## Topics

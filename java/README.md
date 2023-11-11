@@ -1,13 +1,13 @@
 ## Index
-[Spring MVC](https://github.com/Danny7226/LearningSummary#spring-mvc)
+[Spring MVC](https://github.com/Danny7226/LearningSummary/blob/main/java/README.md#spring-mvc)
 
-[Java memory model](https://github.com/Danny7226/LearningSummary#java-memory-model)
+[Java memory model](https://github.com/Danny7226/LearningSummary/blob/main/java/README.md#java-memory-model)
 
-[Weaving](https://github.com/Danny7226/LearningSummary#weaving)
+[Weaving](https://github.com/Danny7226/LearningSummary/blob/main/java/README.md#weaving)
 
-[Dynamic proxy JDK](https://github.com/Danny7226/LearningSummary#dynamic-proxy-jdk)
+[Dynamic proxy JDK](https://github.com/Danny7226/LearningSummary/blob/main/java/README.md#dynamic-proxy-jdk)
 
-[Tomcat, java EE, java servlet, and socket](https://github.com/Danny7226/LearningSummary#tomcat-java-ee-java-servlet-and-socket)
+[Tomcat, java EE, java servlet, and socket](https://github.com/Danny7226/LearningSummary/blob/main/java/README.md#tomcat-java-ee-java-servlet-and-socket)
 
 ## Topics
 ### Spring MVC

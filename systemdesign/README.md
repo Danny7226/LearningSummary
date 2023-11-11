@@ -1,19 +1,19 @@
 ## Index
-[Area of focus](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#area-of-focus)
+[Area of focus](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#area-of-focus)
 
-[Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#service-discovery-vs-load-balancer)
+[Service discovery vs load balancer](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#service-discovery-vs-load-balancer)
 
-[Distributed Web Application quick roll-out](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#distributed-web-application-quick-roll-out)
+[Distributed Web Application quick roll-out](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#distributed-web-application-quick-roll-out)
 
-[Redis cache & hot key](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#redis-cache--hot-key)
+[Redis cache & hot key](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#redis-cache--hot-key)
 
-[Dynamo && how it handles hot partitions](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main#dynamo--how-it-handles-hot-partitions)
+[Dynamo && how it handles hot partitions](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#dynamo--how-it-handles-hot-partitions)
 
-[Reversed index](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main/systemdesign#reversed-index)
+[Reversed index](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#reversed-index)
 
-[Search service](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main/systemdesign#search-service)
+[Search service](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#search-service)
 
-[Data processing pipeline](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign/tree/main/systemdesign#data-processing-pipeline)
+[Data processing pipeline](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#data-processing-pipeline)
 
 ## System Design
 ### Area of focus
