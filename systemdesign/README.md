@@ -38,7 +38,27 @@
     * value maintenance more, use cloud service
 * Put down functional and non-functional requirements accordingly
   * functional requirements are the APIs we are going to have
+    * getViewCount(videoId)
+      * getCount(videoId, eventType)
+        * getStat(videoId, eventType, func) // func: count, sum, avg
+          * it goes even further and more abstract depends on what is considered as the top level entity of our system
+      * the video is considered as the input entity, this is negotiable when we get to the domain data model to see what is the best fit here
   * non-functional requirements are ones like fast, fault tolerant, SLA, secure
+    * Scale (millions of TPS)
+    * Performance (low latency, tens of milliseconds)
+    * Availability (no single point of failure, survives hardware/network failure)
+  * Define domain model and data model (ticket, parking lot, parking slot) (video, view...)
+    * What data we have and can potentially store
+      * individual event (videoId, viewId, timestamp, viewerIdentity, etc.)
+        * fast write, can slice and dice data however we want, can recalculate data and do analysis
+        * Slow read, high storage cost for large scale of data
+      * aggregated data of events (videoId, timeframe, total view)
+        * Fast read of our own service, data is ready to use for other decision-making services
+        * can only query the way how data is aggregated, requires building data aggregation pipeline, hard for bug recovery as we don't have raw data on premise
+    * How to store data
+      * Ask for expected delay
+        * within minutes, stream processing - process data on the fly and store data for few days to a week
+        * within hours, batch processing - store events in data lake and process them in background
 
 ### Service discovery vs load balancer
 * Service discovery acts like a facade to provide endpoints of services to make endpoint changes easier
