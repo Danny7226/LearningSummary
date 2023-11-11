@@ -17,7 +17,7 @@
 
 ## System Design
 ### Area of focus
-* Ask for clarifications
+* Ambiguity
   * Who is user/customer
     * What data system need
     * How data and system interact
