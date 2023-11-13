@@ -66,7 +66,7 @@
         * How to make it extensible for data model change in the future
         * Where to run and how much (cloud vs on-premises)
       * Sql, strong consistency
-        * ![]()
+        * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
         * Geographically read replicas for availability and partition tolerant
         * Sharding partition for scalability
         * Shard proxy for performance
