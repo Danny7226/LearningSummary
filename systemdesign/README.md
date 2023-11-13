@@ -47,50 +47,133 @@
     * Scale (millions of TPS)
     * Performance (low latency, tens of milliseconds)
     * Availability (no single point of failure, survives hardware/network failure)
-  * Define domain model and data model (ticket, parking lot, parking slot) (video, view...)
-    * What data we have and can potentially store
-      * individual event (videoId, viewId, timestamp, viewerIdentity, etc.)
-        * fast write, can slice and dice data however we want, can recalculate data and do analysis
-        * Slow read, high storage cost for large scale of data
-      * aggregated data of events (videoId, timeframe, total view)
-        * Fast read of our own service, data is ready to use for other decision-making services
-        * can only query the way how data is aggregated, requires building data aggregation pipeline, hard for bug recovery as we don't have raw data on premise
-    * What database to use / where to store data
-      * Things to consider
-        * How to scale write, read
-        * How to make read, write fast
-        * How not to lose data in case of hardware/network failure
-        * How to achieve strong consistency, what are the tradeoff
-        * How to recover data in case of outage
-        * How to ensure data security
-        * How to make it extensible for data model change in the future
-        * Where to run and how much (cloud vs on-premises)
-      * Sql, strong consistency
+* Define domain model and data model (ticket, parking lot, parking slot) (video, view...)
+  * What data we have and can potentially store
+    * individual event (videoId, viewId, timestamp, viewerIdentity, etc.)
+      * fast write, can slice and dice data however we want, can recalculate data and do analysis
+      * Slow read, high storage cost for large scale of data
+    * aggregated data of events (videoId, timeframe, total view)
+      * Fast read of our own service, data is ready to use for other decision-making services
+      * can only query the way how data is aggregated, requires building data aggregation pipeline, hard for bug recovery as we don't have raw data on premise
+  * What database to use / where to store data
+    * Things to consider
+      * How to scale write, read
+      * How to make read, write fast
+      * How not to lose data in case of hardware/network failure
+      * How to achieve strong consistency, what are the tradeoff
+      * How to recover data in case of outage
+      * How to ensure data security
+      * How to make it extensible for data model change in the future
+      * Where to run and how much (cloud vs on-premises)
+    * Sql, strong consistency, easy transaction 
       
-        ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
-        * Geographically read replicas for availability and partition tolerant
-        * Sharding partition for scalability
-        * Shard proxy for performance
-        * proxy cluster router to maintain health check, serves as mediator and request router
-      * NoSql
+      ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
+      * Geographically read replicas for availability and partition tolerant
+      * Sharding partition for scalability
+      * Shard proxy for performance
+      * proxy cluster router to maintain health check, serves as mediator and request router
+    * NoSql (architecture are examples, not all NoSql are the same)
       
-        ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/NoSql.png)
-        * Data nodes are treated equal and check heartbreak with no more than 3 and propagate (gossip protocol)
-          * Decentralized, resilient, scalable
-        * Read replicas and geographical replicas in the hash ring (consistent hashing) to provide scalability and partition tolerant
-        * Quorum writes/reads results in eventual consistency and provides performance
-          * Chosen availability over consistency - prefer to show stale data over no data at all
-        * Node takes in request will be chosen as coordinator node, and route requests and return with a quorum defined
-          * When quorum writes/reads, requests are async, and returns with only defined number of nodes succeed writing 
-          * Which node to take in requests can be chosen round-robin, or geographically close or other algorithms
-      * What is data model
-        * Sql: define nouns and use foreign key to relate to different tables
-        * NoSql
-    * How to store data
-      * Ask for expected delay
-        * within minutes, stream processing - process data on the fly and store data for few days to a week
-        * within hours, batch processing - store events in data lake and process them in background
+      ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/NoSql.png)
+      * Data nodes are treated equal and check heartbreak with no more than 3 and propagate (gossip protocol)
+        * Decentralized, resilient, scalable
+      * Read replicas and geographical replicas in the hash ring (consistent hashing) to provide scalability and partition tolerant
+      * Quorum writes/reads results in eventual consistency and provides performance
+        * Chosen availability over consistency - prefer to show stale data over no data at all
+      * Node takes in request will be chosen as coordinator node, and route requests and return with a quorum defined
+        * When quorum writes/reads, requests are async, and returns with only defined number of nodes succeed writing 
+        * Which node to take in requests can be chosen round-robin, or geographically close or other algorithms
+    * What is data model
+      * Sql: define nouns and use foreign key to relate to different tables
+        * data is normalized so that update of data won't require update here and there
+          * Video Table
+          * Video view stat Table
+      * NoSql: define access pattern
+        * videoId, videoName, timestamp, viewCount
+  * How to process and store data
+    * How to process data to scale, reliable and fast
+    * Ask for expected delay
+      * within minutes, stream processing - process data on the fly and store data for few days to a week
+      * within hours, batch processing - store events in data lake and process them in background
+    * Aggregate data in memory before DB IO.
+      * Read data for a certain amount of time before DB IO
+    * Push/Pull: With the help of a queue/stream, you have event checkpoint and infra partitioning (for e.g. hash videoId)
+      * Pull model is easy to scale by simply adding more workers 
+      * Pull model is fault-tolerant, as data is always there and pull model can retry
+      * Push model data would be lost if domain logic failed
+* Components of service
 
+![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/full.png)
+([Source](https://www.youtube.com/watch?v=bUHFg8CZFws&t=12s))
+  * Partitioner Service Client
+    * Blocking IO, one thread processing one socket connection. Thread local to look into states of each thread stack, easy to debug 
+    * Non-blocking IO, requests are queued and processed by one thread. Result in higher throughput, but higher complexity of operations
+    * APIGateway buffer and batch. Requests are sent into buffer and batched and sent to server together to increase throughput, lower cost. Also, higher complexity
+    * Timeout
+      * Connection timeout, how much client is willing to wait for a connection to establish (tens of milliseconds usually)
+      * Request timeout, how much client is willing to wait for a request execution to complete
+      * Retries, avoid single server failure. Also need to be careful with retry numbers to avoid retry storm
+        * Exponential backoff and jitter
+      * Circuit breaker to prevent endless retry with a failure ratio pre-defined and start to re-try after certain time
+        * Introduce difficulty to test
+  * Load balancer
+    * Hardware millions of requests, Software load balancer
+    * Network protocol
+      * TCP lb, routes tcp connections without inspection content inside
+      * Http lb, might look into the content and make routing decisions based on the content (cookie or header of the request)
+    * Algorithms
+      * Round-robin
+      * least-connection
+      * least-response time
+      * Hash-based (request url, ip)
+    * Load balancers' IP are provided to DNS, and server IPs need to be registered to Load Balancer
+      * There are cloud technologies providing registration out of the box, e.g. Docker platform to register/unregister docker containers
+      * Load balancer needs to do health check
+      * Replica to provide high availability, secondary monitors primary and takes over (resides in different data center to prevent outage)
+  * Partitioner service and partitions
+    * Partition strategy
+      * Hash (might result in hot-partition) with timestamp e.g. `hash(videoId)_1630`, `hash(videoId)_1700`
+      * Split data into 2 partitions in hash ring
+      * Reserve dedicated partition for hot data
+    * Service discovery
+      * Server side, allows client to simply call load-balancer, the discovery logic is hidden behind
+      * Client side, allows client to call discovery service to get lists of registered endpoint
+    * Partition replication to provide partition tolerant
+      * Single leader replication, one leader maintained for the information of all partitions (followers)
+        * Write/read talks to leader
+        * If leader dies, a follower promotes to leader
+      * Leader-less replication, partition nodes gossip to each other and any node can take in requests
+      * Multi-leader replication, used for multiple data centers (different physical locations)
+    * Message format
+      * Textual: Json, xml, csv. Better for human readability and debug from dead letter queue
+      * Binary: Thrift, Avro. Faster transmission and easier to parse for machine, as it's more compact
+        * For e.g. Json requires fields included in the message, whereas binary message use fields tags, which is light in size when encoded, serves as alias to field names
+        * Binary message format requires schema predefined and be aware of from both message producer and consumer sides.
+  * Data storage for high volume data
+    * Storage roll up
+      * Fresh data will be stored in every minute granularity
+      * After 2nd day, data will be stored every hour granularity
+      * After a week, data will be stored every day granularity
+      * After a month ...., we keep the latest in active DB (hot storage), rest in object storage (cold storage) such as AWS S3
+  * Data query
+    * Query result based on URL
+    * Query aggregator to fetch recent data from hot storage, ancient data for cold storage
+* OE
+  * To identify bottlenecks
+    * Load testing (Apache JMeter)
+    * Stress testing to a failure point
+    * Soak testing to test high load over an extended period of time
+  * Make sure service is running healthy
+    * Monitoring and metrics with alarms
+  * Make sure service produce accurate results
+    * Weak testing, e2e testing
+    * Strong testing, combine 2 processing systems' result and stitch them at the query system for comparison
+
+### Batch processing and stream processing
+* Stream processing put events in a stream, events can be partitioned to improve scalability and replicated to improve partition tolerant
+* Batch processing are usually using Batch technique (apache hadoop) and map reduce to segment data into batches and process one by one
+* Hybrid - Map reduce data into chunks and store in Object storage such as S3. Use queue message system and a bunch of works to process these data
+  * Faster than Batch process and slower than stream processing
 ### Service discovery vs load balancer
 * Service discovery acts like a facade to provide endpoints of services to make endpoint changes easier
 * Service discovery provides ability to provide client cache
