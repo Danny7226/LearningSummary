@@ -38,6 +38,7 @@
     * value maintenance more, use cloud service
 * Put down functional and non-functional requirements accordingly
   * functional requirements are the APIs we are going to have
+    * Write down verb and input/output, then make some iterations  
     * getViewCount(videoId)
       * getCount(videoId, eventType)
         * getStat(videoId, eventType, func) // func: count, sum, avg
@@ -47,6 +48,7 @@
     * Scale (millions of TPS)
     * Performance (low latency, tens of milliseconds)
     * Availability (no single point of failure, survives hardware/network failure)
+    * Consistency
 * Define domain model and data model (ticket, parking lot, parking slot) (video, view...)
   * What data we have and can potentially store
     * individual event (videoId, viewId, timestamp, viewerIdentity, etc.)
@@ -102,6 +104,8 @@
       * Pull model is fault-tolerant, as data is always there and pull model can retry
       * Push model data would be lost if domain logic failed
 * Components of service
+  * High level first
+    * How data get in and get out
 
 ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/full.png)
 ([Source](https://www.youtube.com/watch?v=bUHFg8CZFws&t=12s))
@@ -159,7 +163,7 @@
     * Query result based on URL
     * Query aggregator to fetch recent data from hot storage, ancient data for cold storage
 * OE
-  * To identify bottlenecks
+  * To identify bottlenecks and how to deal with them
     * Load testing (Apache JMeter)
     * Stress testing to a failure point
     * Soak testing to test high load over an extended period of time
@@ -168,6 +172,7 @@
   * Make sure service produce accurate results
     * Weak testing, e2e testing
     * Strong testing, combine 2 processing systems' result and stitch them at the query system for comparison
+    * 
 
 ### Batch processing and stream processing
 * Stream processing put events in a stream, events can be partitioned to improve scalability and replicated to improve partition tolerant
