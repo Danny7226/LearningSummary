@@ -66,15 +66,21 @@
         * How to make it extensible for data model change in the future
         * Where to run and how much (cloud vs on-premises)
       * Sql, strong consistency
-        * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
+        ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
         * Geographically read replicas for availability and partition tolerant
         * Sharding partition for scalability
         * Shard proxy for performance
         * proxy cluster router to maintain health check, serves as mediator and request router
       * NoSql
-        * Data node check heartbreak with no more than 3 and propagate
-        * Master-node and read replicas
-        * Read quorum with eventual consistency (different user might read data with different value at a moment)
+        ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/NoSql.png)
+        * Data nodes are treated equal and check heartbreak with no more than 3 and propagate (gossip protocol)
+          * Decentralized, resilient, scalable
+        * Read replicas and geographical replicas in the hash ring (consistent hashing) to provide scalability and partition tolerant
+        * Quorum writes/reads results in eventual consistency and provides performance
+          * Chosen availability over consistency - prefer to show stale data over no data at all
+        * Node takes in request will be chosen as coordinator node, and route requests and return with a quorum defined
+          * When quorum writes/reads, requests are async, and returns with only defined number of nodes succeed writing 
+          * Which node to take in requests can be chosen round-robin, or geographically close or other algorithms
       * What is data model
         * Sql: define nouns and use foreign key to relate to different tables
         * NoSql
