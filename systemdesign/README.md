@@ -27,10 +27,10 @@
     * Any spikes
     * How much data each read/write
   * What is the performance of the system
-    * what is the expectation of write-to-read delay
+    * what is the expectation of write-to-read delay (affects how we process our data)
       * If low delay, need to think sync operations / stream processing (with in minutes)
       * If high delay is permitted, batch is allowed (with in hours)
-    * Latency
+    * Latency (affects how to store our data / data-model)
       * low latency required, means data needs to be aggregated
       * high latency permitted, means we could use query language (such as MySql) to query relational tables
   * What is the cost expectation of the system
@@ -55,6 +55,29 @@
       * aggregated data of events (videoId, timeframe, total view)
         * Fast read of our own service, data is ready to use for other decision-making services
         * can only query the way how data is aggregated, requires building data aggregation pipeline, hard for bug recovery as we don't have raw data on premise
+    * What database to use / where to store data
+      * Things to consider
+        * How to scale write, read
+        * How to make read, write fast
+        * How not to lose data in case of hardware/network failure
+        * How to achieve strong consistency, what are the tradeoff
+        * How to recover data in case of outage
+        * How to ensure data security
+        * How to make it extensible for data model change in the future
+        * Where to run and how much (cloud vs on-premises)
+      * Sql, strong consistency
+        * ![]()
+        * Geographically read replicas for availability and partition tolerant
+        * Sharding partition for scalability
+        * Shard proxy for performance
+        * proxy cluster router to maintain health check, serves as mediator and request router
+      * NoSql
+        * Data node check heartbreak with no more than 3 and propagate
+        * Master-node and read replicas
+        * Read quorum with eventual consistency (different user might read data with different value at a moment)
+      * What is data model
+        * Sql: define nouns and use foreign key to relate to different tables
+        * NoSql
     * How to store data
       * Ask for expected delay
         * within minutes, stream processing - process data on the fly and store data for few days to a week
