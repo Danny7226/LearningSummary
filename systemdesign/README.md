@@ -66,12 +66,14 @@
         * How to make it extensible for data model change in the future
         * Where to run and how much (cloud vs on-premises)
       * Sql, strong consistency
+      
         ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
         * Geographically read replicas for availability and partition tolerant
         * Sharding partition for scalability
         * Shard proxy for performance
         * proxy cluster router to maintain health check, serves as mediator and request router
       * NoSql
+      
         ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/NoSql.png)
         * Data nodes are treated equal and check heartbreak with no more than 3 and propagate (gossip protocol)
           * Decentralized, resilient, scalable
