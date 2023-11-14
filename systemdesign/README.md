@@ -106,9 +106,7 @@
 * Components of service
   * High level first
     * How data get in and get out
-
-![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/full.png)
-([Source](https://www.youtube.com/watch?v=bUHFg8CZFws&t=12s))
+    * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/full.png) ([Source](https://www.youtube.com/watch?v=bUHFg8CZFws&t=12s))
   * Partitioner Service Client
     * Blocking IO, one thread processing one socket connection. Thread local to look into states of each thread stack, easy to debug 
     * Non-blocking IO, requests are queued and processed by one thread. Result in higher throughput, but higher complexity of operations
