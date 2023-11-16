@@ -25,6 +25,8 @@
 
 [RFC 7231 HTTP 1.1](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#rfc-7231-hypertext-transfer-protocol-http-11)
 
+[Rest API]()
+
 [Version and Release Management](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#version-and-release-management)
 
 
@@ -230,5 +232,12 @@ Class LazyInitialization {
             * This can be achieved by comparing the fixed-length Hash value of data
             * Hash values are usually used in HTTP transmission to determine if the downloaded data has been modified or corrupted
             * It's usually included in the Header, as HEAD method will cut off the message body and only sent headers back
+
+### Rest API
+* Batch API
+  * Takes in multiple input object and respond with 207 multi-state when succeeded
+  * Only TCP handshake once and make one connection, saves overhead when counting the overall latency
+  * socket write takes around 5-10 micro-second, message write takes around 1 micro-second 
+    * overhead is considered of a huge ratio if message size is small
 
 ### Version and Release Management

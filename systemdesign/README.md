@@ -255,3 +255,55 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
 * Ingesting
 * Scoping
 * Computing
+
+### System design case 1: design parking lot system
+![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/parkinglot/textual.png)
+
+* Ambiguity as mentioned in pic
+* Functional non-functional features as mentioned in pic
+* Domain/data model
+  * What data we have
+    * Data is not complicated here, we have the parking slot info when indexing, which might include the following
+      * Parking building #
+      * Parking slot #
+      * Size (small, medium, large)
+      * Occupied
+    * When request/extend/pay-out a reservation, we have a reservation info, which might include the following
+      * Reservation Id
+      * Parking building #
+      * Parking slot #
+      * Status
+      * Time spent (from, to)
+      * Amount paid
+  * Domain/data model as mentioned in pic
+  * How to process
+    * We could queue indexing requests for even-paced processing and failure recovery
+      * Partition queues when index request is high (this is probably not needed)
+      * Replica queue in different data center to provide failure-tolerant
+    * We choose relational database for strong consistency when doing ticket and parking lot update transactions
+    * Aggregate reservation requests within server runtime every second if the traffic volume is getting intense to avoid replicated DBIO connection overhead
+    * Request reservation
+      * Input (parking lot #, size, time needed)
+      * Output (reservation #, parking slot #)
+      * Scan parking lot # partition node to find right size
+      * Update slot status to occupied
+      * Put reservation entry
+    * Extend reservation
+      * Update end time in `reservation table`
+    * Pay-out reservation
+      * If within minutes, async, to even high volume traffic
+        * Put message in queue and return success
+      * If within a second, sync, use transactions
+* System diagram
+  * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/parkinglot/parkinglot.png)
+  * Request reservation
+    * Input (parking lot #, size, time needed)
+    * Output (reservation #, parking slot #)
+    * Scan parking lot # partition node to find right size
+    * Update slot status to occupied
+    * Put reservation entry
+    * Extend reservation
+      * Update end time in `reservation table`
+    * Pay-out reservation
+      * Sync way, use transactions
+      * Async, put message in queue and return success
