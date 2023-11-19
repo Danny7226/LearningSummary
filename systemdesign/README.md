@@ -15,6 +15,8 @@
 
 [Data processing pipeline](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#data-processing-pipeline)
 
+[System design case 1: design parking lot system](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-1-design-parking-lot-system)
+
 ## System Design
 ### Area of focus
 * Ambiguity
@@ -92,6 +94,8 @@
           * Video view stat Table
       * NoSql: define access pattern
         * videoId, videoName, timestamp, viewCount
+    * Calculate how much data storage is needed
+      * DAU * daily write operation / user
   * How to process and store data
     * How to process data to scale, reliable and fast
     * Ask for expected delay
@@ -307,3 +311,74 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
     * Pay-out reservation
       * Sync way, use transactions
       * Async, put message in queue and return success
+
+### System design case 2: Proximity Service
+* Ambiguity
+  * Customer
+    * Business owner
+    * User to query business locations given a location and search radius
+  * Traffic volume
+    * We have 50 million business
+    * We have 100 million active users with 5 queries per day
+  * Performance
+    * write-to-read delay
+      * It can take up to a day to update the business changes
+    * latency
+      * Read should be fast, within one seconds
+* functional and non-functional features
+  * Functional
+    * GetBusiness(longitude, latitude, radius) : {pagination, count: {}, data: [{}{}...]}
+      * `POST v1/business/search`
+    * IndexBusiness(business)
+      * `POST/GET/PUT/DELETE v1/business/{:id}`
+    * Non-functional
+      * Availability, low-consistency
+      * Scalability 
+      * Fault-tolerant
+* Domain and data model
+  * what data we have
+    * Business metadata
+      * Business name/id, location (lat,long), country, state, province
+    * We need to aggregate data and index them for fast search queries
+  * What database to use
+    * Business table for business CRUD and to render the result page (it can be a NoSql db)
+      * 50 million business * (1kb/business) = 50 GB
+      * 100 million DAU * 5 queries/user / 100,000 sec/day = 5000 QPS 
+    * Search table to search queries (geospatial indexed table)
+      * `Location, businessId, lat, long, country, state` (2 + 8 + 8 + 8 + 8 + 8) = 40 bytes
+      * 40 bytes * 50 MM business = 40 * 50 * 10^6 = 2000 * 10^6 = 2 * 19^9 = 2 GB (tiny, fly weight)
+      * we could use in-memory, disk
+  * How to process data
+    * Business owner index data into table, this can be done in async (pull model) (data ingestion)
+    * Because our service is read heavy, we need design to scale up for read
+      * Shard/replica/cache, which one to use depends on the size of our data storage
+* Geospatial Index algorithm
+  * Common pain point
+    * lat and long is two dimensions, common query language is slow when doing query on 2 dimensions, cuz it results in a table scan
+      * Use long + lat as compound key, is not really possible as it's an intersection point, not a zone,
+    * solution is to map 2-dimensional data into 1 dimensional, and therefore improve the query efficiency (logarithm)
+  * Hash based
+    * Even-grid: divided 2-dimensional map into evenly distributed grids. Problem is business is not evenly distributed in each grid
+    * Geohash
+      * Use 00, 01, 10, 11 to divide map into 4 grids
+      * then for each grid, do further division for 00 -> {00 00, 00 01, 00 10, 00 11} 4 bits
+      * encode bits into base32 string for e.g. `1001 10110 01001 10000 11011 11010` -> `9q9hvu`
+      * since geohash is string, and one property of string is query can be done in any database, we don't need a geospatial db
+      * Use precision to define the grid size in real world (km * km)
+      * there is table explaining the relation between geohash length (in encoded string) and the grid size
+        * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/proximity/table.png)
+        * Usually we store the level 6 base32 encoded string as Geohash key, and pay attention to level 4-6 (20km - 600m in radius) when doing the query,
+        * As prefix characters defines the large area whereas the following character specifies which sub-area it is in the large scope
+          * `9q9hv*` defines the (4.9km * 4.9km square)
+          * Similar prefix means location is close, but reverse is not true (location is close, prefix is similar)
+        * when doing the query, choose the right level (choose grid level whose granularity covers the whole circle)
+          * 500m radius, do level 6 search, query all 8 neighbours of `9q9hvu`
+          * 4km radius, do level 5 search, query all 8 neighbours of `9q9hv`
+          * Calculating neighbours in geohash can be provided by lib in constant time
+          * `SELECT * from input_data where country = 'SG' and substr(geohash,1,6) IN ('w21zd2', 'w21z6r', 'w21z6q', 'w21z6m')`
+  * Tree based (in memory storage, different set of deployment strategy and operational requirements)
+    * Guadtree
+    * Google s2
+    * Rtree
+* System diagram
+  ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/proximity/system.png)
