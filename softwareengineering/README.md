@@ -240,4 +240,13 @@ Class LazyInitialization {
   * socket write takes around 5-10 micro-second, message write takes around 1 micro-second 
     * overhead is considered of a huge ratio if message size is small
 
+### Unicode
+* UTF-8, 8 bits (`255` in decimal, `ff` in hex) to encode common European characters, but takes up to 32 bits to encode some
+  * 1 - 4 bytes
+  * UTF-8 is compatible with ASCII. When ASCII is mostly used characters, storage using UTF-8 requires only 1 byte
+  * UTF-8 file contains only ASCII characters that have the same encoding as ASCII file
+* UTF-16, 
+  * 2 or 4 bytes
+* UTF-32
+  * 4 bytes
 ### Version and Release Management

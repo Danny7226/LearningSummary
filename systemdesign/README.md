@@ -16,6 +16,7 @@
 [Data processing pipeline](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#data-processing-pipeline)
 
 [System design case 1: design parking lot system](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-1-design-parking-lot-system)
+[System design case 2: proximity service](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-2-proximity-service)
 
 ## System Design
 ### Area of focus
@@ -375,7 +376,7 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
           * 500m radius, do level 6 search, query all 8 neighbours of `9q9hvu`
           * 4km radius, do level 5 search, query all 8 neighbours of `9q9hv`
           * Calculating neighbours in geohash can be provided by lib in constant time
-          * `SELECT * from input_data where country = 'SG' and substr(geohash,1,6) IN ('w21zd2', 'w21z6r', 'w21z6q', 'w21z6m')`
+          * `SELECT * from input_data where state = 'WA_US' and substr(geohash,1,6) IN ('w21zd2', 'w21z6r', 'w21z6q', 'w21z6m')`
   * Tree based (in memory storage, different set of deployment strategy and operational requirements)
     * Guadtree
     * Google s2
