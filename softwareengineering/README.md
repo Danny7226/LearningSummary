@@ -25,7 +25,9 @@
 
 [RFC 7231 HTTP 1.1](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#rfc-7231-hypertext-transfer-protocol-http-11)
 
-[Rest API]()
+[Rest API](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#rest-api)
+
+[Unicode](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#unicode)
 
 [Version and Release Management](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#version-and-release-management)
 

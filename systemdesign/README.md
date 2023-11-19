@@ -16,6 +16,7 @@
 [Data processing pipeline](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/README.md#data-processing-pipeline)
 
 [System design case 1: design parking lot system](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-1-design-parking-lot-system)
+
 [System design case 2: proximity service](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-2-proximity-service)
 
 ## System Design
