@@ -380,5 +380,6 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
     * Guadtree
     * Google s2
     * Rtree
+    * A trie might be good for search if it's fly weight (can be loaded into RAM), TODO give it a further thought 
 * System diagram
   ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/proximity/system.png)
