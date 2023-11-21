@@ -319,6 +319,69 @@ be able to display basic employee information (tenure, name, department, role, p
 tens of milliseconds latency for read
 
 ### System design case 4: review with pagination
-be able to write reviews for a product
-be able to retrieve reviews for a product with pagination based on different rank (time, star, time and star)
-be able to keyword search review
+* Clarification for ambiguity
+  * Customer
+    * Shoppers who want to leave a review for a product
+    * Shoppers who want to see reviews of a product
+    * Business owners who want to manage products of their business store
+  * Scale
+    * 1MM business owners
+    * 100 products per business
+    * 1000 MM daily active shoppers
+    * 1% of DAU leaves a review
+  * Performance
+    * relatively high acceptance criteria for write-to-read delay
+    * reviews read should be fast, within order of magnitude of milliseconds
+    * highly available, fault-tolerant, but doesn't have to have strong consistency
+* Functional and non-function requirements
+  * be able to write reviews for a product
+    * `v1/reviews` POST
+  * be able to retrieve reviews for a product with pagination based on different rank (time, star, time and star)
+    * BATCH GET `v1/reviews?page=;sort=;` with URL param such as pagination offset/token, page size, sort filter
+  * be able to keyword search review
+    * BATCH GET `v1/reviews/search?product=;keyword=`
+  * be able to view products or a business
+    * `v1/business/{:id}`
+    * `v1/products/{:id}?business=id;`
+  * Non-functional as in ambiguity performance section above
+* Data modeling
+  * Entity, ER, 
+    * Reviews
+      * reviewId, productId, reviewTitle, review content, review BLOBid (1KB)
+    * Business
+      * business id, ownerId , business description (100B)
+    * Product
+      * productId, businessId, productName, product description, product price (100B)
+  * size of storage
+    * Product table: 1MM business owner * 100 products per business * 100B per product = 1 * 10^10B = 10GB small size SQL
+    * Business table: 1MM business * 100B = 100 MB fly weight
+    * Reviews table: 1% * 1000MM DAU * 1KB/review = 10GB / day, 4 TB / year
+  * TPS: 
+    * write reviews 10MM / 100,000 sec/day = 100 TPS
+    * read reviews 1000MM / 100,000 sec/day = 10k TPS
+  * Database schema
+    * Since there is strong relationship between business and products, we will use SQL for business and product table
+    * Since data volume of reviews is huge and access pattern is straightforward and ready heavy and latency needs to be low, we will use NoSQL
+    * Business table
+      * BusinessId (pk), ownerId(fk), business info columns...
+    * Product table
+      * ProductId (pk), businessId (fk), product info columns...
+    * Reviews table (support sorting, and filtering by star feature)
+      * Partition key: productId `uniqueProductId`
+      * Sort key: timestamp_reviewId `1700592636_uniqueReviewId`
+      * GSI: star_productId `3star_uniqueProductId`
+      * Attributes (key-value pair): reviewTitle, reviewContent, reviewBlobs
+    * Reviews search table (inverted index table)
+      * keyword: keyword_string
+      * reviewIdentifier: productId_timestamp_reviewId
+* System diagram
+  * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/review/system.png)
+  * CRUD of business and product will be through biz & product proxy and interact with SQL DB directly
+  * Write of reviews will go through data ingestion pipeline first 
+    * It will smooth the traffic, provide failure recovery and process at its own space
+    * ingestion queue can be partitioned and replicated in different data center to improve processing speed as well as fault-tolerant
+    * reviews data will be stored in Reviews NoSQL db as well as inverted-index db for keyword search
+  * Read of reviews will interact with ReviewsDB
+    * reviews data are sorted based on timestamp
+    * normal pagination will leverage Sort key: timestamp_reviewId
+    * star filter will look up `star_productId` partition nodes along with sort key: timestamp_reviewId
