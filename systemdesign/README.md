@@ -9,18 +9,30 @@
 
 [System design case 2: proximity service](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-2-proximity-service)
 
+[System design case 2: Amazon phone tool service]()
+
+[System design case 4: reviews with pagination](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-4-review-with-pagination)
+
 ## System Design
+https://excalidraw.com/
 ### Area of focus
-* Ambiguity
+* Ambiguity (5 min)
   * Who is user/customer
     * What data system need
     * How data and system interact
+  * functional requirements are the APIs we are going to have
+    * Write down verb and input/output, then make some iterations
+    * getViewCount(videoId)
+      * getCount(videoId, eventType)
+        * getStat(videoId, eventType, func) // func: count, sum, avg
+          * it goes even further and more abstract depends on what is considered as the top level entity of our system
+      * the video is considered as the input entity, this is negotiable when we get to the domain data model to see what is the best fit here
   * What is the scale/traffic of the system
     * Read traffic per sec
     * Write traffic per sec
     * Any spikes
     * How much data each read/write
-  * What is the performance of the system
+  * What is the performance of the system (availability, consistency, partition-tolerance)
     * what is the expectation of write-to-read delay (affects how we process our data)
       * If low delay, need to think sync operations / stream processing (with in minutes)
       * If high delay is permitted, batch is allowed (with in hours)
@@ -30,20 +42,7 @@
   * What is the cost expectation of the system
     * value development cost, use open-source
     * value maintenance more, use cloud service
-* Put down functional and non-functional requirements accordingly
-  * functional requirements are the APIs we are going to have
-    * Write down verb and input/output, then make some iterations  
-    * getViewCount(videoId)
-      * getCount(videoId, eventType)
-        * getStat(videoId, eventType, func) // func: count, sum, avg
-          * it goes even further and more abstract depends on what is considered as the top level entity of our system
-      * the video is considered as the input entity, this is negotiable when we get to the domain data model to see what is the best fit here
-  * non-functional requirements are ones like fast, fault tolerant, SLA, secure (CAP)
-    * Scale (millions of TPS)
-    * Performance (low latency, tens of milliseconds)
-    * Availability (no single point of failure, survives hardware/network failure)
-    * Consistency
-* Define domain model and data model - Entity, ER, type and size of storage
+* Define domain model and data model - Entity, ER, type and size of storage (10 - 15 min)
   * What data we have and can potentially store
     * individual event (videoId, viewId, timestamp, viewerIdentity, etc.)
       * fast write, can slice and dice data however we want, can recalculate data and do analysis
@@ -88,8 +87,8 @@
         * videoId, videoName, timestamp, viewCount
     * Calculate how much data storage is needed
       * DAU * daily write operation / user
-* Components of service
-  * High level design
+* Components of service (30 - 45 min)
+  * High level design (5 min)
     * How to process and store data
       * How to process data to scale, reliable and fast
       * Ask for expected delay
