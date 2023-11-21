@@ -301,7 +301,14 @@
     * Guadtree
     * Google s2
     * Rtree
-    * A trie might be good for search if it's fly weight (can be loaded into RAM), TODO give it a further thought 
+    * A trie might be good for search if it's fly weight (can be loaded into RAM), TODO give it a further thought
+      * [ref](https://blog.mapbox.com/a-dive-into-spatial-search-algorithms-ebd0c5e39d2a)
+      * Tree depth is `ceil(log(numberOfGrids) / log(divisionOfLevel))`. For e.g. 1MM grids with 9 divisions per level, depth is 7
+      * Range search takes `depth * divisionOfLevel` comparisons. 7 * 9 = 63 for 1MM grids with 9 divisions per level
+      * K-th closest neighbours search requires a data structure priority queue, based on the rank of the distance of targeting grid (segment-point and segment-box distance)
+        * Putting tree nodes from the highest level, and unbox and put in children of the closest one in the PQ
+        * Keep doing and add nodes to the return list if it is of the targeting level
+        * Complexity is O(k * depth * divisionOfLevel * PQ_Insertion)
 * System diagram
   ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/proximity/system.png)
 
@@ -310,3 +317,8 @@ be able to show upper-chain managers and employee's direct reports
 be able to display basic employee information (tenure, name, department, role, position level, etc)
 1 days delay for write
 tens of milliseconds latency for read
+
+### System design case 4: review with pagination
+be able to write reviews for a product
+be able to retrieve reviews for a product with pagination based on different rank (time, star, time and star)
+be able to keyword search review
