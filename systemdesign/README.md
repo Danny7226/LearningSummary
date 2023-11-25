@@ -32,7 +32,7 @@ https://excalidraw.com/
     * Write traffic per sec
     * Any spikes
     * How much data each read/write
-  * What is the performance of the system (availability, consistency, partition-tolerance)
+  * What is the performance of the system (**availability/redundancy**, **consistency**, **partition-tolerance**)
     * what is the expectation of write-to-read delay (affects how we process our data)
       * If low delay, need to think sync operations / stream processing (with in minutes)
       * If high delay is permitted, batch is allowed (with in hours)
@@ -60,14 +60,14 @@ https://excalidraw.com/
       * How to ensure data security
       * How to make it extensible for data model change in the future
       * Where to run and how much (cloud vs on-premises)
-    * Sql, strong consistency, easy transaction 
+    * Sql, ACID transaction, analytics, data warehousing 
       
       ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/Sql.png)
       * Geographically read replicas for availability and partition tolerant
       * Sharding partition for scalability
       * Shard proxy for performance
       * proxy cluster router to maintain health check, serves as mediator and request router
-    * NoSql (architecture are examples, not all NoSql are the same)
+    * NoSql, easy read/write scaled (architecture are examples, not all NoSql are the same)
       
       ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/NoSql.png)
       * Data nodes are treated equal and check heartbreak with no more than 3 and propagate (gossip protocol)
@@ -78,6 +78,8 @@ https://excalidraw.com/
       * Node takes in request will be chosen as coordinator node, and route requests and return with a quorum defined
         * When quorum writes/reads, requests are async, and returns with only defined number of nodes succeed writing 
         * Which node to take in requests can be chosen round-robin, or geographically close or other algorithms
+      * 3 types (column, document, key-value)
+        * document db is wide-columned
     * What is data model
       * Sql: define nouns and use foreign key to relate to different tables
         * data is normalized so that update of data won't require update here and there
