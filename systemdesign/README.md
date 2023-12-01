@@ -390,9 +390,9 @@ tens of milliseconds latency for read
     * star filter will look up `star_productId` partition nodes along with sort key: timestamp_reviewId
 
 ### System design case 5: data center health
-Design a system that captures health data in the AWS data centers. Present data every 12 hours on a website to track the remaining life of a component. 
-The hosts in data center can emit their health. The initial health value is 100 and decreases over time. This system immediately sends notifications 
-of component failures or potential failures.
+Design a system that captures health data in the server centers. Present data every 12 hours on an UI to track the remaining life of a server. 
+The hosts in server center can emit their health. Health can be thought of a value that decreases over time. Immediate notification is needed for server failure 
+or lower threshold heath data.
 * every 12 hours, means our data storage doesn't need to store real time data
 * notification immediately means it needs to be real time
 
