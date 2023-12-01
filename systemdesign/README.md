@@ -13,7 +13,7 @@
 
 [System design case 4: reviews with pagination](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-4-review-with-pagination)
 
-[System design case 5: Monitoring servers](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-5-data-center-health)
+[System design case 5: Monitoring JVM metrics](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-5-data-center-health)
 
 ## System Design
 https://excalidraw.com/
@@ -389,9 +389,9 @@ tens of milliseconds latency for read
     * normal pagination will leverage Sort key: timestamp_reviewId
     * star filter will look up `star_productId` partition nodes along with sort key: timestamp_reviewId
 
-### System design case 5: Monitoring servers 
-Design a system that captures health data in the server centers. Present data every 12 hours on an UI to track the remaining life of a server. 
-The hosts in server center can emit their health. Health can be thought of a value that goes down as wear and tear. Immediate notification is needed for server failure 
+### System design case 5: Monitoring JVM metrics 
+Design a system that captures JVM metrics data in the docker centers. Present data every 12 hours on an UI to track the remaining life of a server. 
+The JVM in docker center can emit their health. Health can be thought of a value that goes down as wear and tear. Immediate notification is needed for JVM failure 
 or lower threshold heath data.
 * every 12 hours, means our data storage doesn't need to store real time data
 * notification immediately means it needs to be real time
