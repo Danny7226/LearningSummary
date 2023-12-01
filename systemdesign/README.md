@@ -13,7 +13,7 @@
 
 [System design case 4: reviews with pagination](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-4-review-with-pagination)
 
-[System design case 5: data center health]()
+[System design case 5: data center health](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-5-data-center-health)
 
 ## System Design
 https://excalidraw.com/
@@ -426,6 +426,6 @@ of component failures or potential failures.
     * If health below threshold, notify 
     * After data aggregation, safely delete data in data lake
     * Gossip or master node is used to check if a host is dead, if dead, send notifications immediately
-  * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system.pdf)
+  * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system.png)
   
   
