@@ -391,7 +391,7 @@ tens of milliseconds latency for read
 
 ### System design case 5: Monitoring servers 
 Design a system that captures health data in the server centers. Present data every 12 hours on an UI to track the remaining life of a server. 
-The hosts in server center can emit their health. Health can be thought of a value that decreases over time. Immediate notification is needed for server failure 
+The hosts in server center can emit their health. Health can be thought of a value that goes down as wear and tear. Immediate notification is needed for server failure 
 or lower threshold heath data.
 * every 12 hours, means our data storage doesn't need to store real time data
 * notification immediately means it needs to be real time
