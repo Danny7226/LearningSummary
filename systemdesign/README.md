@@ -390,9 +390,9 @@ tens of milliseconds latency for read
     * star filter will look up `star_productId` partition nodes along with sort key: timestamp_reviewId
 
 ### System design case 5: Monitoring JVM metrics 
-Design a system that captures JVM metrics data in the docker centers. Present data every 12 hours on an UI to track the remaining life of a server. 
-The JVM in docker center can emit their health. Health can be thought of a value that goes down as wear and tear. Immediate notification is needed for JVM failure 
-or lower threshold heath data.
+Develop a system to collect JVM metrics data within Docker centers. Display this data on a user interface every 12 hours to monitor the server's remaining lifespan. 
+The JVM instances in the Docker center should be able to communicate their health status, wherein health is perceived as a value diminishing with wear and tear. 
+Implement immediate notifications for both JVM failures and instances where health data falls below a predefined threshold.
 * every 12 hours, means our data storage doesn't need to store real time data
 * notification immediately means it needs to be real time
 
