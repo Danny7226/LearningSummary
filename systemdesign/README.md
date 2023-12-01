@@ -13,6 +13,8 @@
 
 [System design case 4: reviews with pagination](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-4-review-with-pagination)
 
+[System design case 5: data center health]()
+
 ## System Design
 https://excalidraw.com/
 ### Area of focus
@@ -386,3 +388,44 @@ tens of milliseconds latency for read
     * reviews data are sorted based on timestamp
     * normal pagination will leverage Sort key: timestamp_reviewId
     * star filter will look up `star_productId` partition nodes along with sort key: timestamp_reviewId
+
+### System design case 5: data center health
+Design a system that captures health data in the AWS data centers. Present data every 12 hours on a website to track the remaining life of a component. 
+The hosts in data center can emit their health. The initial health value is 100 and decreases over time. This system immediately sends notifications 
+of component failures or potential failures.
+* every 12 hours, means our data storage doesn't need to store real time data
+* notification immediately means it needs to be real time
+
+* Ambiguity
+  * Who is our customer
+    * person that subscribe to data server notifications
+    * person that monitor data server remaining life
+  * Func
+    * getDataCenterDetails
+    * subscribe(dataCenter)
+  * Scale
+    * 100MM servers reside in 1MM data centers
+    * 1 million subscribers
+    * low read TPS, 10 - 100 TPS read with cache
+  * Non functional requirements
+    * Highly available
+    * Scale-able
+* data model
+  * raw data we have
+    * `dataCenterId` `dataServerId` `remainingLife`
+    * `dataCenterId` `subscriberEndpoint`
+  * No need for strong consistent ACID transactions so NoSql database
+* System diagram
+  * How do we get the data
+    * Since don't need to present data in real time, emit health data every minute
+    * Need to have a mechanism to check heartbeat of data server (either gossip or a master node)
+  * How to process data
+    * Since monitoring data doesn't need to be real time, we put raw data in a data lake, which is append-on log files
+    * A ingestion pipeline with a partitioner is needed in order to partition raw data into smaller portion 
+    * Works can process data lake data and aggregate them for a certain period of time (store in memory first), and then write the health DB
+    * If health below threshold, notify 
+    * After data aggregation, safely delete data in data lake
+    * Gossip or master node is used to check if a host is dead, if dead, send notifications immediately
+  * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system.pdf)
+  
+  
