@@ -13,7 +13,7 @@
 
 [System design case 4: reviews with pagination](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-4-review-with-pagination)
 
-[System design case 5: Monitoring JVM metrics](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-5-data-center-health)
+[System design case 5: Monitoring JVM metrics](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-5-monitoring-jvm-metrics)
 
 ## System Design
 https://excalidraw.com/
