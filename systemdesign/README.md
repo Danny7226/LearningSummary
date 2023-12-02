@@ -427,5 +427,15 @@ Implement immediate notifications for both JVM failures and instances where heal
     * After data aggregation, safely delete data in data lake
     * Gossip or master node is used to check if a host is dead, if dead, send notifications immediately
   * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system.png)
+
+* Round2 recap
+  * Since we don't need to present result in real time, only every 8 hours, we could 
+    * have let the data servers send healthy info to a stream with partitioner, 
+    * an in-memory compute engine reads each partition data and update the in-memory table (k-v map)
+    * if in-memory compute engine dies, simply replace with another one since we don't need to memorize the previous state, no recovery cost
+      * if need to memorize, have SSTable and commit log in disk to recover
+    * Every couple of hours, update the main table for monitor reading purpose (or simply read data directly from compute engines)
+    * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system2.jpg)
+  
   
   
