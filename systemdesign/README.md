@@ -81,7 +81,7 @@ https://excalidraw.com/
         * When quorum writes/reads, requests are async, and returns with only defined number of nodes succeed writing 
         * Which node to take in requests can be chosen round-robin, or geographically close or other algorithms
       * 3 types (column, document, key-value)
-        * document db is wide-columned
+        * document db is wide-columned, not able to query on attributes
     * What is data model
       * Sql: define nouns and use foreign key to relate to different tables
         * data is normalized so that update of data won't require update here and there
@@ -431,9 +431,9 @@ Implement immediate notifications for both JVM failures and instances where heal
 * Round2 recap
   * Since we don't need to present result in real time, only every 8 hours, we could 
     * have let the data servers send healthy info to a stream with partitioner, 
-    * an in-memory compute engine reads each partition data and update the in-memory table (k-v map)
+    * an in-memory compute engine reads each partition data and update the in-memory data structure (k-v map if only direct lookup, treemap for range queries)
     * 100MM data server, 100 partition => EC2 1MM data server health info, which is 1MM * 1KB == 1GB in memory storage
-      * 1MM operations / batch of health information / EC2, in-memory operations takes couple nanoseconds (10**-9)
+      * 1MM operations / batch of health information / EC2, in-memory operations takes couple nanoseconds in general (10**-9)
     * if in-memory compute engine dies, simply replace with another one since we don't need to memorize the previous state, no recovery cost
       * if need to memorize, have SSTable and commit log in disk to recover
     * Every couple of hours, update the main table for monitor reading purpose (or simply read data directly from compute engines)

@@ -232,6 +232,7 @@ Class LazyInitialization {
     * Soft link: creates a link points a file to another file
         * Can cross file systems
         * `ln -s`
+* `tail -f`
 
 ### Throttling, token-bucket algorithm
 * Each transaction/request takes one token away from the bucket
