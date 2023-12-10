@@ -253,6 +253,11 @@ Class LazyInitialization {
   * Only TCP handshake once and make one connection, saves overhead when counting the overall latency
   * socket write takes around 5-10 micro-second, message write takes around 1 micro-second 
     * overhead is considered of a huge ratio if message size is small
+* Get vs POST
+  * Get is supposed to be idempotent, therefore will be potentially cached
+  * Get is not intended to modify resources, when uploading parameter in body instead of querystring, it might result in compatibility issue
+    * In smithy, @httpLabel -> url path, @httpQuery -> url query parameter, @httpPayload -> payload body 
+  * Both querystring and request body are encrypted
 
 ### Unicode
 * UTF-8, 8 bits (`255` in decimal, `ff` in hex) to encode common European characters, but takes up to 32 bits to encode some
