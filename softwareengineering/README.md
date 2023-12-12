@@ -339,3 +339,25 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
 * Better for full context search
 * 
 ### Version and Release Management
+
+
+### Websocket vs HTTP
+* Websocket complements the long-lasting communication in web world, which is the missing part of HTTP
+* Single handshake is enough for establishing long communicating session for websocket, whereas TCP handshake is required for each individual HTTP connection
+* Starting HTTP2.0, mutiplexing enables multiple requests within same connection, HTTP3.0 provides multiplexing with multiple streams to mitigate head-of-line-blocking, but still not long-lasting enough
+* Websocket is bidirectional whereas http is single-direction
+* Usually the HTTP request is initiated by client, server cannot notify client on its own
+* Websocket has lighter weight header so that communication expense is low than HTTP
+* Websocket is initiated with an HTTP request with keywords in heads, like `Upgrade: websocket` and `Sec-WebSocket-Key` to request upgrading protocol from HTTP to Websocket
+  * If server supports and agrees, http 101 status code will be returned (1xx informational, request received, continue processing)
+  * 101 response with headers `Connection: Upgrade` and `Sec-WebSocket-Accept: xxx`
+  * Heartbeat mechanism is used to maintain connections of websocket between client and server
+
+### TCP vs UDP and IP
+* TCP is connection oriented, which guarantees message delivery, in-order deliver, no package loss. It tracks the status of each connection
+* IP, internet protocol, defines the format of the network layer packets to enable transmission navigation to make sure they can be delivered to the right address
+* IPv4 is decimal notation `123:89:46:72` denotes `01111011:01011001:xxxxxxxx:xxxxxxxx` 4 bytes, 32 bits -> 4.2 billion addresses 4.2*10^9
+* Ipv4 is hex notation 16 bytes, 128 bits
+* NAT（Network Address Translation) was used to translate IP address in different networks
+  * It could be used to translate private IP address to public address, which mitigate IPv4 shortage also hides the topological details of inner net. IPv6 makes it totally optional
+* IP is the virtual location on the Internet, whereas Mac is the physical address/identifier of each device that can be connected to the Internet
