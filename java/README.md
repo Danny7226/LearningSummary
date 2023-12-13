@@ -9,6 +9,10 @@
 
 [Tomcat, java EE, java servlet, and socket](https://github.com/Danny7226/LearningSummary/blob/main/java/README.md#tomcat-java-ee-java-servlet-and-socket)
 
+[JVM classloader and Spring bean](https://github.com/Danny7226/LearningSummary/tree/main/java#jvm-classloader-and-spring-bean-management)
+
+[Reentrant lock]()
+
 ## Topics
 ### Spring MVC
 * Spring MVC takes in http request in DispatchServlet (single entry point)
@@ -163,5 +167,39 @@ public class MyClass {
 @Lazy
 public class LazyInitializedBean {
     // Implementation
+}
+```
+
+
+### Reentrant lock
+```agsl
+public class CustomReentrantLock {
+    private boolean isLocked = false;
+    private Thread lockedBy = null;
+    private int lockCount = 0;
+
+    public synchronized void lock() throws InterruptedException {
+        Thread currentThread = Thread.currentThread();
+        while (isLocked && lockedBy != currentThread) {
+            // If the lock is held by another thread and it's not reentrant,
+            // wait until it's released.
+            wait();
+        }
+        isLocked = true;
+        lockedBy = currentThread;
+        lockCount++;
+    }
+
+    public synchronized void unlock() {
+        if (Thread.currentThread() == lockedBy) {
+            lockCount--;
+
+            if (lockCount == 0) {
+                isLocked = false;
+                lockedBy = null;
+                notify();
+            }
+        }
+    }
 }
 ```
