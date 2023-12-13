@@ -64,3 +64,104 @@
 * Tomcat (servlet contain) manages java servlet lifecycles, dispatch requests into appropriate servlet. Servelet can generate HTML, execute logic, access DB and etc
 * Java socket fits into transport layer in OSI model (layer 4), socket is a software object representing an IP + port number
 * Port is a logical entity. Port, along with IP, uniquely identifies the destination (endpoint) for a data packets in network
+
+### JVM Classloader and Spring Bean management
+* JVM loads Class dynamically on-demand. When a class is needed, JVM will check ClassLoader to see if a class is loaded (top down, native parent ClassLoader first, then down to custom ClassLoader)
+  * If Class is not loaded, JVM loads it
+  * If two threads in the same JVM instance concurrently need access to the same class that hasn't been loaded before, the JVM ensures that the class is loaded only once
+```agsl
+public class MyClassLoader extends ClassLoader {
+    // this might introduce dead lock, a refined version is to lock based on an Object with a className
+    // https://docs.oracle.com/javase/7/docs/technotes/guides/lang/cl-mt.html -> getClassLoadingLock(name)
+    // native class loader might be singleton use an reentrantlock to avoid any deadlock
+    private final Object lock = new Object();
+
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        synchronized (lock) {
+            // Check if the class has already been loaded
+            Class<?> loadedClass = findLoadedClass(name);
+            if (loadedClass != null) {
+                return loadedClass;
+            }
+
+            try {
+                // Load the class bytes from file or any source
+                byte[] classData = loadClassData(name);
+                return defineClass(name, classData, 0, classData.length);
+            } catch (IOException e) {
+                throw new ClassNotFoundException("Class '" + name + "' not found.", e);
+            }
+        }
+    }
+
+    private byte[] loadClassData(String className) throws IOException {
+        // For demonstration purposes, load class bytes from a file
+        String classFileName = className.replace('.', File.separatorChar) + ".class";
+        try (FileInputStream fis = new FileInputStream(classFileName);
+             ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+
+            int data;
+            while ((data = fis.read()) != -1) {
+                bos.write(data);
+            }
+            return bos.toByteArray();
+        }
+    }
+    
+    @Override
+    private Class<T> findLoadedClass(String name) {
+        // check loaded classes first, and if not, parent.loadClass(name);
+        // if parent.loadClass(name) cannot load, CustomerClassLoader logic will be trigered
+        
+        // this behavior can be overriden in CustomClassLoader to not invoke parent first 
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        // Example usage of the custom class loader
+        MyClassLoader myClassLoader = new MyClassLoader();
+        Class<?> loadedClass = myClassLoader.loadClass("com.example.MyClass");
+        // Use the loaded class as needed
+    }
+}
+```
+* example of `getClassLoadingLock(name)`
+```agsl
+// Emulated getClassLoadingLock method
+private Object getClassLoadingLock(String className) {
+    synchronized (classLoadingLocks) {
+        // Use the class name as a key to retrieve the lock object
+        classLoadingLocks.putIfAbsent(className, new Object());
+        return classLoadingLocks.get(className);
+    }
+}
+```
+
+  * CustomClassLoader is beneficial in many ways, one of them is when doing AOP
+    * CustomerClassLoader can add behaviors to loaded classes
+    * You can set CustomClassLoader as the default classloader
+      * this will only affect classes loaded after setting this class loader. Classes already loaded before setting this will continue to use the previous class loader.
+```agsl
+public class MyClass {
+    public static void main(String[] args) {
+        // Create an instance of your custom class loader
+        CustomClassLoader customClassLoader = new CustomClassLoader();
+
+        // Set your custom class loader as the default class loader for the application
+        Thread.currentThread().setContextClassLoader(customClassLoader);
+
+        // Now, any classes loaded within this thread will use your custom class loader
+        // You'll need to load or run your application logic here
+    }
+}
+```
+
+* Spring Bean has multiple types, Singleton Bean, Session Bean, Prototype Bean, etc
+  * Singleton beans are usually constructed during Application Context initialization, and will be maintained through the whole application lifecycle
+```agsl
+@Component
+@Lazy
+public class LazyInitializedBean {
+    // Implementation
+}
+```
