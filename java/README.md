@@ -70,6 +70,7 @@
 * Port is a logical entity. Port, along with IP, uniquely identifies the destination (endpoint) for a data packets in network
 
 ### JVM Classloader and Spring Bean management
+* TODO read more on Tomcat and how Tomcat defines its classloader
 * JVM loads Class dynamically on-demand. When a class is needed, JVM will check ClassLoader to see if a class is loaded (top down, native parent ClassLoader first, then down to custom ClassLoader)
   * If Class is not loaded, JVM loads it
   * If two threads in the same JVM instance concurrently need access to the same class that hasn't been loaded before, the JVM ensures that the class is loaded only once
@@ -200,6 +201,37 @@ public class CustomReentrantLock {
                 notify();
             }
         }
+    }
+}
+```
+
+### AspectJ with annotation
+```agsl
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface LogExecutionTime {
+    String value() default "Execution Time Logged";
+}
+
+@Aspect
+public class LoggingAspect {
+
+    @Around("@annotation(logExecutionTime)")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint, LogExecutionTime logExecutionTime) throws Throwable {
+        long startTime = System.currentTimeMillis();
+
+        Object result;
+        try {
+            result = joinPoint.proceed();
+        } finally {
+            long endTime = System.currentTimeMillis();
+            long executionTime = endTime - startTime;
+
+            String message = logExecutionTime.value();
+            System.out.println(message + ": " + joinPoint.getSignature() + " executed in " + executionTime + "ms");
+        }
+
+        return result;
     }
 }
 ```
