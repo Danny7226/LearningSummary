@@ -81,10 +81,15 @@ Couple of comparisons
     * CAS has ABA problem, meaning even comparedValue and expectedValue are the same, doesn't mean it has not been updated
     * VersionNumber/TimeStamp is often used along with CAS to achieve optimistic locking
 * In DynamoDB, optimistic lock is achieved by version attribute to detect whether a data is modified prior to updating it
+  * DynamoDB optimistic lock CAS is not thread safe, might still result in data loss, when write volume is huge
+  * Optimistic is a mechanism that provides soft check, but doesn't guarantee thread safe 
 * Pessimistic locking, locks are placed automatically when data are getting processed
-    * DynamoDB's transaction is based on pessimistic locking
+    * DynamoDB's transaction is based on pessimistic locking, instead of lock the rows, it monitors and rolls back transaction when another modification happens
+      * So it's not a technically strict pessimistic lock, so write performance is still not perfect
+      * Could use external lock system to synchronize concurrent requests to improve write performance
+      * DDB transaction is to guarantee atomicity with rollback, but ConditionConflict might still happen (not thread-safe)
     * Optimistic locking is preferred for read-heavy situation to avoid race, deadlock, and un-necessary lock gaining and release
-    * Pessimistic locking is preferred for write-heavy situation to avoid constant re-try
+    * Pessimistic locking is preferred for write-heavy situation to avoid constant re-try, and CAS atomicity/isolation
 * In order to help understand Pessimistic lock, one example is JPA
     * JPA provides PESSIMISTIC_READ to maintain a shard lock, where data can be read when someone helds a shard lock
     * PESSIMISTIC_WRITE provides an exclusive lock where data cannot be READ, WRITE, UPDATE
@@ -361,3 +366,13 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
 * NAT（Network Address Translation) was used to translate IP address in different networks
   * It could be used to translate private IP address to public address, which mitigate IPv4 shortage also hides the topological details of inner net. IPv6 makes it totally optional
 * IP is the virtual location on the Internet, whereas Mac is the physical address/identifier of each device that can be connected to the Internet
+
+### Concurrent write
+* When write traffic volume is huge and concurrent writes happen on the same resources (say, to update a list field in a json document)
+  * The request is to add an item in the list, or simply overwrite the whole list
+  * Add an item in the list can provide higher success rate (availability) by using async process to serialize requests, but higher latency
+  * Simple overwrite provides immediate response to clients, but need to introduce a mechanism to avoid data loss (CAS, or pessimistic lock for all update operations to ensure stronger consistency than CAS)
+  * Or simply think back from the beginning, is it possible to normalize the data model so that this list field in document can be normalized into multiple entries to avoid concurrent update on shared resource
+* When write traffic volume is not huge, simple optimistic lock with database's build-in CAS (usually not thread safe) is sufficient for most cases
+  * Variant table (ability to get paginated results of an item's all variants)
+  * `pk: {parentItemId}, sort: variant_timestamp_{variantItemId}, ...columnsOfOtherAttributes`
