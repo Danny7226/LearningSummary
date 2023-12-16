@@ -43,6 +43,8 @@
 
 [Version and Release Management](https://github.com/Danny7226/LearningSummary/blob/main/softwareengineering/README.md#version-and-release-management)
 
+[Concurrent Write](https://github.com/Danny7226/LearningSummary/tree/main/softwareengineering#concurrent-write)
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -82,14 +84,14 @@ Couple of comparisons
     * VersionNumber/TimeStamp is often used along with CAS to achieve optimistic locking
 * In DynamoDB, optimistic lock is achieved by version attribute to detect whether a data is modified prior to updating it
   * DynamoDB optimistic lock CAS is not thread safe, might still result in data loss, when write volume is huge
-  * Optimistic is a mechanism that provides soft check, but doesn't guarantee thread safe 
+  * Optimistic is a mechanism that provides conditional check, but doesn't guarantee thread safe 
 * Pessimistic locking, locks are placed automatically when data are getting processed
     * DynamoDB's transaction is based on pessimistic locking, instead of lock the rows, it monitors and rolls back transaction when another modification happens
       * So it's not a technically strict pessimistic lock, so write performance is still not perfect
       * Could use external lock system to synchronize concurrent requests to improve write performance
       * DDB transaction is to guarantee atomicity with rollback, but ConditionConflict might still happen (not thread-safe)
-    * Optimistic locking is preferred for read-heavy situation to avoid race, deadlock, and un-necessary lock gaining and release
-    * Pessimistic locking is preferred for write-heavy situation to avoid constant re-try, and CAS atomicity/isolation
+    * Optimistic locking is preferred for write-heavy (on different row) situation to avoid un-necessary lock gaining and release
+    * Pessimistic locking is preferred for write-heavy (on same row) situation to provide CAS atomicity/isolation and avoid constant re-try 
 * In order to help understand Pessimistic lock, one example is JPA
     * JPA provides PESSIMISTIC_READ to maintain a shard lock, where data can be read when someone helds a shard lock
     * PESSIMISTIC_WRITE provides an exclusive lock where data cannot be READ, WRITE, UPDATE
