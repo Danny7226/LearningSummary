@@ -378,3 +378,12 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
 * When write traffic volume is not huge, simple optimistic lock with database's build-in CAS (usually not thread safe) is sufficient for most cases
   * Variant table (ability to get paginated results of an item's all variants)
   * `pk: {parentItemId}, sort: variant_timestamp_{variantItemId}, ...columnsOfOtherAttributes`
+
+### Metrics
+* How to use a single metrics indicate the overall availability
+  * Available call emit data point 1, unavailable call emits datapoint 0
+  * Need to make sure the emitted datapoint is binary so that the sample count represents the total call count
+    * Average: availability (average is the sum/sample count)
+    * Sum: successful request count
+    * Sample count: total request count
+    * Sample count - Sum: failed request count
