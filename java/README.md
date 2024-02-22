@@ -235,3 +235,10 @@ public class LoggingAspect {
     }
 }
 ```
+
+
+### Spring Annotation
+* Configuration + Bean vs Bean itself
+  * `Configuration` indicates CGLib and proxy will be introduced when generating beans inter-dependently within the class
+    * IoC container will manager the beans registered within this class and therefore `singleton` will be applied
+  * No `Configuration` annotation class will not utilize CGlib proxy and therefore a new instance of bean will be generated everytime it's needed
