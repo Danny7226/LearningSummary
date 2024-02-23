@@ -236,9 +236,14 @@ public class LoggingAspect {
 }
 ```
 
-
 ### Spring Annotation
 * Configuration + Bean vs Bean itself
   * `Configuration` indicates CGLib and proxy will be introduced when generating beans inter-dependently within the class
     * IoC container will manager the beans registered within this class and therefore `singleton` will be applied
   * No `Configuration` annotation class will not utilize CGlib proxy and therefore a new instance of bean will be generated everytime it's needed
+
+### Dependency closure
+* Class import will result in JVM class loader loading that class into JVM memory on demand
+  * Only used class will be imported as the JVM class loading optimization
+* Declaring dependency will result in dependency resolution tool (ant, maven, gradle) download dependency jar files on disk
+* The dependency jar files will be loaded into memory once needed by JVM class loader
