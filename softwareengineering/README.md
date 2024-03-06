@@ -45,6 +45,10 @@
 
 [Concurrent Write](https://github.com/Danny7226/LearningSummary/tree/main/softwareengineering#concurrent-write)
 
+[Metrics]()
+
+[NGINX]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -387,3 +391,34 @@ https://www.linkedin.com/feed/update/urn:li:activity:7123372072059248640/
     * Sum: successful request count
     * Sample count: total request count
     * Sample count - Sum: failed request count
+
+### NGINX
+* https://nginx.org/en/
+* NGINX instance can be used as proxy server as well as to serve static contents
+* Example of nginx config file
+  * Longest location that matches with the input URI will be selected
+  * `root` outside of `location` will be used as default in location blocks without a `root` directive
+  * In example below, `/images/good.png` will fetch the assets located at `/data/images/good.png`
+  * `/someother/good.png` will fetch the assets located at `/data/up1/someother/good.png`
+  * location also supports regex. NGINX will remember the longest matching location to use if no regex matches
+```agsl
+http {
+  server {
+      listen 8080;
+      root /data/up1;
+  
+      location / {
+      }
+  }
+
+  server {
+      location / {
+          proxy_pass http://localhost:8080;
+      }
+  
+      location /images/ {
+          root /data;
+      }
+  }
+}
+```
