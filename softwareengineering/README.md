@@ -45,9 +45,9 @@
 
 [Concurrent Write](https://github.com/Danny7226/LearningSummary/tree/main/softwareengineering#concurrent-write)
 
-[Metrics]()
+[Metrics](https://github.com/Danny7226/LearningSummary/tree/main/softwareengineering#metrics)
 
-[NGINX]()
+[NGINX](https://github.com/Danny7226/LearningSummary/tree/main/softwareengineering#nginx)
 
 ## Topics
 ### Sql vs NoSql
@@ -421,4 +421,24 @@ http {
       }
   }
 }
+```
+
+* Load balancing
+  * HTTP Load balancing
+```agsl
+http {
+    upstream backend {
+        ip_hash; # if not specified, round robin by default, other algo such as `hash $request_uri consistent`
+        server backend1.example.com;
+        server backend2.example.com down; # marked down temporarily to preserve the current hashing of client IP addresse 
+        server 192.0.0.1 backup;
+    }
+    
+    server {
+        location / {
+            proxy_pass http://backend;
+        }
+    }
+}
+
 ```
