@@ -36,6 +36,7 @@
 * Java garbage collection scans heap memory and cleans objects that are no longer referenced
 * Static fields points to the same reference in heap, and therefore multiple threads accessing same static class/method/fields might cause race condition. However there is no guarantee of the visibility for all threads to see the changes
 * java volatile is used to make sure data is written into main memory and visibility to all threads
+* Java GC pauses the world. If tail latency is impotent for API developers, rust might be a good choice as programming language
 
 ### Weaving
 * Weaving is a technical to manipulate byte-code java classes in JVM
