@@ -442,3 +442,8 @@ http {
 }
 
 ```
+
+### Modulo
+* Use prime numbers as modulo factor gives a higher chance of obtaining unique value for a typical hash function
+* Regular hash `hash = firstChar * k + secondChar * k^2 + ...`. if K is non-prime, that means it has a factor that is neither 1 nor itself, then possible for hash collision
+* `10^9+7 or 1_000_000_007` is the first prime number that's above 10 digits which is close to `2^30`
