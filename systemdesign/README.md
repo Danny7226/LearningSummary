@@ -21,7 +21,7 @@ https://excalidraw.com/
 * Ambiguity (5 min)
   * Who is user/customer
     * What data system need
-    * How data and system interact
+    * How data and system interact (how frequently, in what angle, how get in and get out from our system)
   * functional requirements are the APIs we are going to have
     * Write down verb and input/output, then make some iterations
     * getViewCount(videoId)
@@ -35,6 +35,7 @@ https://excalidraw.com/
     * Any spikes
     * How much data each read/write
   * What is the performance of the system (**availability/redundancy**, **consistency**, **partition-tolerance**)
+    * scalability - partitioning, availability/repliable - replication, fast - in memory
     * what is the expectation of write-to-read delay (affects how we process our data)
       * If low delay, need to think sync operations / stream processing (with in minutes)
       * If high delay is permitted, batch is allowed (with in hours)
@@ -83,11 +84,11 @@ https://excalidraw.com/
       * 3 types (column, document, key-value)
         * document db is wide-columned, not able to query on attributes
     * What is data model
-      * Sql: define nouns and use foreign key to relate to different tables
+      * Sql: define **nouns** and use foreign key to relate to different tables
         * data is normalized so that update of data won't require update here and there
           * Video Table
           * Video view stat Table
-      * NoSql: define access pattern
+      * NoSql: define **access pattern**
         * videoId, videoName, timestamp, viewCount
     * Calculate how much data storage is needed
       * DAU * daily write operation / user
@@ -104,17 +105,19 @@ https://excalidraw.com/
         * Pull model is easy to scale by simply adding more workers
         * Pull model is fault-tolerant, as data is always there and pull model can retry
         * Push model data would be lost if domain logic failed
+        * Pull model can be combined with internal queue with multithreaded IO writers and dead letter queue (either in-memory or on disk) for performance and fault-tolerance
+        * Pull model can be combined with in-memory / embedded databases for data enrichment before storage
     * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/full.png) ([Source](https://www.youtube.com/watch?v=bUHFg8CZFws&t=12s))
   * Partitioner Service Client
-    * Blocking IO, one thread processing one socket connection. Thread local to look into states of each thread stack, easy to debug 
-    * Non-blocking IO, requests are queued and processed by one thread. Result in higher throughput, but higher complexity of operations
+    * Blocking IO, one thread processing one socket connection (socket is logical object consists of IP, transport protocol, and port. No limits to number of sockets in terms of ports). Thread local to look into states of each thread stack, easy to debug 
+    * Non-blocking IO, requests are queued and processed by one thread. Result in higher throughput, but higher complexity of operations, thread local might not be applicable
     * APIGateway buffer and batch. Requests are sent into buffer and batched and sent to server together to increase throughput, lower cost. Also, higher complexity
     * Timeout
       * Connection timeout, how much client is willing to wait for a connection to establish (tens of milliseconds usually)
-      * Request timeout, how much client is willing to wait for a request execution to complete
+      * Request timeout, how much client is willing to wait for a request execution to complete, usually this number is set after analyzing the request latency percentile
       * Retries, avoid single server failure. Also need to be careful with retry numbers to avoid retry storm
-        * Exponential backoff and jitter
-      * Circuit breaker to prevent endless retry with a failure ratio pre-defined and start to re-try after certain time
+        * Exponential backoff (retry multiple times but with increasing intervals) and jitter (add randomness to retry intervals)
+      * Circuit breaker to prevent endless retry with a failure ratio pre-defined and start to re-try after certain time (a fallback behavior can be defined when server is totally unreachable)
         * Introduce difficulty to test
   * Load balancer
     * Hardware millions of requests, Software load balancer
@@ -129,17 +132,17 @@ https://excalidraw.com/
     * Load balancers' IP are provided to DNS, and server IPs need to be registered to Load Balancer
       * There are cloud technologies providing registration out of the box, e.g. Docker platform to register/unregister docker containers
       * Load balancer needs to do health check
-      * Replica to provide high availability, secondary monitors primary and takes over (resides in different data center to prevent outage)
+      * Replica (secondary load balancer) to provide high availability, secondary monitors primary and takes over (resides in different data center to prevent outage)
   * Partitioner service and partitions
     * Partition strategy
-      * Hash (might result in hot-partition) with timestamp e.g. `hash(videoId)_1630`, `hash(videoId)_1700`
-      * Split data into 2 partitions in hash ring
-      * Reserve dedicated partition for hot data
+      * Hash (might result in hot-partition) with timestamp (mitigate the hot partition to some extent) e.g. `hash(videoId)_1630`, `hash(videoId)_1700`
+      * Split one partition data into 2 or more partitions in hash ring
+        * Even reserve dedicated partition for hot key
     * Service discovery
       * Server side, allows client to simply call load-balancer, the discovery logic is hidden behind
-      * Client side, allows client to call discovery service to get lists of registered endpoint
+      * Client side. Partition instance register in registry and allows client to call discovery service to get lists of registered endpoint (zoo-keeper) and their health info
     * Partition replication to provide partition tolerant
-      * Single leader replication, one leader maintained for the information of all partitions (followers)
+      * Single leader replication, one leader maintains the information (heartbeat etc.) of all partitions (followers)
         * Write/read talks to leader
         * If leader dies, a follower promotes to leader
       * Leader-less replication, partition nodes gossip to each other and any node can take in requests
@@ -157,18 +160,60 @@ https://excalidraw.com/
       * After a month ...., we keep the latest in active DB (hot storage), rest in object storage (cold storage) such as AWS S3
   * Data query
     * Query result based on URL
-    * Query aggregator to fetch recent data from hot storage, ancient data for cold storage
+    * Query aggregator to fetch recent data from hot storage, ancient data for cold storage. Apply distributed cache to boost the overall performance
+* Technology stack
+  * Client
+    * Netty, netflix hystrix, polly to integrate timeout, retry, circuit breaker easily
+  * Load Balancing
+    * NetScaler (hardware)
+    * NGINX
+    * AWS ELB
+      * Network LB (layer 4), faster
+      * Application LB (layer 7), more granular control
+  * Streaming system
+    * Apache Kafka
+    * AWS Kinesis
+  * Stream processing framework
+    * Apache Spark
+    * Apache Flink
+    * AWS Kinesis data analysis
+  * Storage
+    * NoSql
+      * Apache Cassandra (SSTable, write optimized, wide column, leaderless)
+      * MongoDB (document, single leader)
+      * AWS DynamoDB (key value, single leader); Dynamo model is leaderless but dynamoDb is single-leader
+    * Sql
+      * Redshift
+      * MySql
+    * Batch
+      * Apache Hadoop
+    * Object
+      * AWS S3
+  * Others
+    * DLQ support
+      * RabbitMQ
+      * AWS SQS
+    * Distributed cache
+      * Redis
+    * Consensus, leader election
+      * Apache Zookeeper
+    * Service discovery
+      * Eureka
 * OE - operate-able, simple, extensible
   * To identify bottlenecks and how to deal with them
-    * Load testing (Apache JMeter)
+    * Load testing (Apache JMeter), measure performance under specific expected load
+      * To make sure our system can handle an expected production traffic
     * Stress testing to a failure point
+      * To test bottlenecks - dependency throttling, CPU, memory, network IO, disk etc.
     * Soak testing to test high load over an extended period of time
+      * To test leaks in the system, e.g. memory leak, disk pollution (if disk logs are purged or simply piled up to breaking point)
   * Make sure service is running healthy
     * Monitoring and metrics with alarms
   * Make sure service produce accurate results
-    * Weak testing, e2e testing
-    * Strong testing, combine 2 processing systems' result and stitch them at the query system for comparison
-
+    * Weak audit testing - e2e testing
+    * Strong audit testing - combine 2 processing systems' result and stitch them at the query system for comparison
+      * This is so-called **Lambda Architecture**
+      * Send events to both stream and batch systems to process in parallel
 ### Search Service
 * Proxy
     * Single entry to data center, provides load balancing, routing, monitoring, throttling, auth and various of benefits
