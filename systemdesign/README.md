@@ -526,13 +526,13 @@ Implement immediate notifications for both JVM failures and instances where heal
       * Transcoding into different resolutions
       * Watermark
     * A merge job would be needed at the end to assemble transcode videos
-    * Task can be processed with pull-model with message queue and works to scale easily with processing failure control
+    * Task can be processed with pull-model with message queues and workers to scale easily with processing failure control
   ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/videostreaming/system.jpg)
 * Discussions
   * Speed can be optimized by, introducing queue and parallel processing
   * Cost can be optimized by, putting only popular video on CDN and other videos on high throughput storage. Transcode video on demand
-  * Security can be guarded by introducing pre-signed url so that only legitimate owner can perform the relevant operation
-  * Fault-tolerant can be optimized by, introducing redundancy to the system, replica
+  * Security can be guarded by introducing pre-signed url to blob storage so that only legitimate owner can perform the relevant operation
+  * Fault-tolerant can be optimized by, introducing redundancy to the system, replica, DLQ and retries
   * Scalability can be optimized by, 
     * designing stateless api and scale horizontally
     * partitioning database so that increase the overall throughput of the database IO
