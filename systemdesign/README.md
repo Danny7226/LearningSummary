@@ -484,5 +484,56 @@ Implement immediate notifications for both JVM failures and instances where heal
     * Every couple of hours, update the main table for monitor reading purpose (or simply read data directly from compute engines)
     * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system2.jpg)
   
+
+### System design case 5 - design video streaming system
+
+
+
+
+
+
+
+
+
+
+* Ambiguities
+  * Customer
+    * people who want to stream videos on our platform 
+    * people who want to share/update videos to our platform
+  * Functional Feature
+    * Upload video
+    * stream video
+  * Scale
+    * 100 million DAU, 1% of them upload 1 video per day, one person watches 5 videos per day
+    * 300 MB per video
+      * 5 * 10^8 * 300 MB = 150 PetaByte throughput for streaming
+      * 300 TB storage to add per day
+  * Performance
+    * Scalable - 500 MM * 5 / 100_000 ~= 2500 TPS for video metadata retrieval from streaming service
+    * Available
+    * Fault tolerant
+  * Cost-effective
+* Domain entity and data model
+  * Video
+    * Blob
+    * Video id
+    * Video name
+    * Video owner id
+    * Video transcode status
+    * {Video blob urls...} (based on different resolutions)
+  * Content creator
+    * id
+    * name
+* System design
+  * HLD + LLD
+  ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/videostreaming/system.jpg)
+* Discussions
+  * Speed can be optimized by, introducing queue and parallel processing
+  * Cost can be optimized by, putting only popular video on CDN and other videos on high throughput storage. Transcode video on demand
+  * Security can be guarded by introducing pre-signed url so that only legitimate owner can perform the relevant operation
+  * Fault-tolerant can be optimized by, introducing redundancy to the system, replica
+  * Scalability can be optimized by, 
+    * designing stateless api and scale horizontally
+    * partitioning database so that increase the overall throughput of the database IO
   
   
