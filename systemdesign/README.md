@@ -15,6 +15,8 @@
 
 [System design case 5: Monitoring JVM metrics](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-5-monitoring-jvm-metrics)
 
+[System design case 6: design video streaming system](https://github.com/Danny7226/LearningSummary/tree/main/systemdesign#system-design-case-6---design-video-streaming-system)
+
 ## System Design
 https://excalidraw.com/
 ### Area of focus
@@ -485,17 +487,7 @@ Implement immediate notifications for both JVM failures and instances where heal
     * ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/datacenterhealth/system2.jpg)
   
 
-### System design case 5 - design video streaming system
-
-
-
-
-
-
-
-
-
-
+### System design case 6 - design video streaming system
 * Ambiguities
   * Customer
     * people who want to stream videos on our platform 
@@ -526,6 +518,15 @@ Implement immediate notifications for both JVM failures and instances where heal
     * name
 * System design
   * HLD + LLD
+  * video transcoding can be split and staged
+    * video can be chunked to be processed in parallel
+    * video can be split into video, audio, metadata
+    * video processing job can be split into multiple tasks
+      * Inspection/Validation
+      * Transcoding into different resolutions
+      * Watermark
+    * A merge job would be needed at the end to assemble transcode videos
+    * Task can be processed with pull-model with message queue and works to scale easily with processing failure control
   ![](https://github.com/Danny7226/LearningSummary/blob/main/systemdesign/assets/videostreaming/system.jpg)
 * Discussions
   * Speed can be optimized by, introducing queue and parallel processing
