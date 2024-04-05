@@ -49,6 +49,8 @@
 
 [NGINX](https://github.com/Danny7226/LearningSummary/tree/main/softwareengineering#nginx)
 
+[TinyURL]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -447,3 +449,16 @@ http {
 * Use prime numbers as modulo factor gives a higher chance of obtaining unique value for a typical hash function
 * Regular hash `hash = firstChar * k + secondChar * k^2 + ...`. if K is non-prime, that means it has a factor that is neither 1 nor itself, then possible for hash collision
 * `10^9+7 or 1_000_000_007` is the first prime number that's above 10 digits which is close to `2^30`
+
+### Tiny URL
+* Tiny URl can be achieved by applying hash function to the original long url, or UID generator with base64 encoding
+* Hash function shortening
+  * Data Model `shortenHash::pk; originalUrl::gsi`
+  * There is a possibility of hash collision when indexing long url (it appears as id exists in DB).
+    * Solution could he append a pre-defined String to the original long url and rehash till empty
+    * Above solution makes the de-dupe tricky, therefore we could treat long URL as a GSI to avoid re-index same long url
+* UID shortening
+  * After getting a sense of how many unique long url we want to support in the lifespan of our system, we could determine how many bits we need for UID
+  * Distributed UID generator is needed (`[timestamp][datacenterid][serverid][monotoneNumber]`)
+  * In order to shorten the UID, we use Base64 algorithm to encode UID
+  * Data model `base64encoded::pk; originalUrl::gsi`
