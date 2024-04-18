@@ -51,6 +51,8 @@
 
 [TinyURL]()
 
+[Microservice vs Monolithic]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -462,3 +464,13 @@ http {
   * Distributed UID generator is needed (`[timestamp][datacenterid][serverid][monotoneNumber]`)
   * In order to shorten the UID, we use Base64 algorithm to encode UID
   * Data model `base64encoded::pk; originalUrl::gsi`
+
+### Microservice vs Monolithic
+* Microservice provide loosely coupled architecture so that each domain component
+  * can be maintained independently
+  * can be developed and scaled independently
+  * can have blast radius contained within themselves
+* Problem of microservice is the overhead of development and total cost
+* Another problem of microservice is the breakdown of databases
+  * Data integrity and consistency used to be handled by database engine now has to be handled at the application layer
+* A middle ground for small startups, define well-decoupled interfaces in a monolithic package
