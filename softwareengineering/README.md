@@ -53,6 +53,8 @@
 
 [Microservice vs Monolithic]()
 
+[Why Kubernates for ML]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -474,3 +476,11 @@ http {
 * Another problem of microservice is the breakdown of databases
   * Data integrity and consistency used to be handled by database engine now has to be handled at the application layer
 * A middle ground for small startups, define well-decoupled interfaces in a monolithic package
+
+### Why Kubernates for ML
+* Need container to avoid boilerplate for dependency management, hardware (CPU, GPU) management and so on
+* Need orchestration the containers and fine-tune configuration utilization and meeting security needs at the same time
+* Brings monitoring and observability into the picture
+* Scale up nodes and distribute data across nodes
+* Scale down nodes once model is mature and only on-demand traning needed now and then
+* AWS EKS has better support and integration with other native AWS services such as built-in api driver with S3
