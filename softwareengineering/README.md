@@ -55,6 +55,10 @@
 
 [Why Kubernates for ML]()
 
+[AWS Kinesis]()
+
+[AWS SQS]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -484,3 +488,30 @@ http {
 * Scale up nodes and distribute data across nodes
 * Scale down nodes once model is mature and only on-demand traning needed now and then
 * AWS EKS has better support and integration with other native AWS services such as built-in api driver with S3
+
+
+### Kinesis streaming
+* Kinesis process on the shard and record level, instead of focusing on the delivery of messages (Queuing service)
+* Kinesis shard # determines the network throughput of stream and processing power 
+  * 1 shard can write up to ~1MB (limited by network bandwidth i believe) data or 1k (limited by connection threads i believe) records per sec
+  * 1 shard can read up to ~2MB data 
+* Kinesis can configure retention from 1-365 days, additional retention requires additional disk storage for each shard (might be achieved by EBS)
+* Kinesis can easy fan out with multiple consumers processing the same message, this is not easy to do natively with AWS SQS where consumer groups isn't really a concept yet
+  * Kinesis provide 2 mode, standard consumer with low # of consumers (1-3) where latency can be tolerated (200ms or more)
+  * Enhanced Fan-out, more consumer (5-10) and low latency required (70 ms), with higher price (I believe the cost comes from additional complexity from the consumer coordination nodes, zoo-keeper?)
+* When consuming, a lease table (implemented with DynamoDB) will be used to store coordination info of shards and workers
+  * Each row represents a shard that is being processed by workers. Structure `account-id:StreamName:streamCreationTimestamp:ShardId`. For example, `111111111:multiStreamTest-1:12345:shardId-000000000336`
+  * Each row has data such as 
+    * Checkpoint: sequence number for the shard, unique across all shards in the stream, for failure recovery
+    * CheckpointSubSequenceNumber. tracks the processing checkpoint of each individual user records
+    * LeaseKey: a unique id for a lease. Each lease is particular to a shard in the data stream and is held by one worker at a time
+    * LeaseCounter; for versioning the lease so that worker can detect their lease has been taken by another worker (this is like a fencing technique for consensus)
+    * ParentShardId; the id of the parent shard. This happens during shard splitting (when scaling up during operation) and maintain sequential order to child shard.
+* If all shard records need to be process sequentially, a consumer side coordinator might be needed to serialize the data
+  * Otherwise, when processing in parallel, only relevant data (on the same shard by providing the same partition key associated to the record) can be processed in order
+
+### AWS SQS
+* FIFO queue requires groupId, and guarantee exactly once processing (by having de-dupe, which can be content-based or id based, and message deletion confirmation call) 
+* SQS groupId of the messages limits the messages to be sent to the same partition so that the casualty order can be guaranteed for processing
+  * Only one consumer can process messages of the same groupId at a time
+
