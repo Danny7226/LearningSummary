@@ -59,6 +59,10 @@
 
 [AWS SQS]()
 
+[VPC, LB, AZ, subnet]()
+
+[DNS & Route 53]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -514,4 +518,32 @@ http {
 * FIFO queue requires groupId, and guarantee exactly once processing (by having de-dupe, which can be content-based or id based, and message deletion confirmation call) 
 * SQS groupId of the messages limits the messages to be sent to the same partition so that the casualty order can be guaranteed for processing
   * Only one consumer can process messages of the same groupId at a time
+
+### VPC, LB, AZ, subnet
+* VPC can cross multiple availability zone, which can further span multiple subnets (private and public, which uses CIDE to deinfe the IP ranges for each)
+* Load Balancer has Load Balancer capacity (LBC) deployed in each enabled availability zone
+* Load Balancer routes the request to the EC2 instance through an LBC node that’s associated with the public subnet in the same Availability Zone
+* he route table routes the traffic locally within the VPC, between the public subnet and the private subnet, and to the EC2 instance
+
+### DNS && Route 53
+* Route 53 returns the look-up IP, it does not redirect the traffic through route 53
+* ISP -> Root domain (contains name server info of all TLD) -> Top Level Domain / TLD (.com .net .org) -> Authoritative DNS / Name Server (Route 53)
+* DNS Records
+  * A record (IP of domain name)
+  * NS record (IP of the Name Servers) - the name servers which contains the information of certain domain
+  * CNAME / Alias record - one domain name points to another domain (www.example.com -> example.com)
+  * MX record - main exchange (IP of email servers)
+  * SOA record - start of authority record indicating who is the authoritative DNS
+  * TXT record - additional domain information/validation
+* Routing policy
+  * Direct routing - provide IP to domain names
+  * Latency based routing (LBR) - provides latency optimized IP of the resource in one of the deployed regions
+    * Route 53 has a means to know the latency of multiple regions to user's IP
+  * Weighted routing
+    * It defines the percentage of querys that returns a certain IP
+  * Geolocation routing policy
+    * returns a certain IP based on the query's IP
+  * Failover routing policy
+    * Return primary resource IP unless it's unreachable, in which case route53 returns the secondary resource IP
+  * Above policies can be used in combination to serve the overall routing experience
 
