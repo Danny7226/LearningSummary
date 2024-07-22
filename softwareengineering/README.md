@@ -523,7 +523,7 @@ http {
 * VPC can cross multiple availability zone, which can further span multiple subnets (private and public, which uses CIDE to deinfe the IP ranges for each)
 * Load Balancer has Load Balancer capacity (LBC) deployed in each enabled availability zone
 * Load Balancer routes the request to the EC2 instance through an LBC node that’s associated with the public subnet in the same Availability Zone
-* he route table routes the traffic locally within the VPC, between the public subnet and the private subnet, and to the EC2 instance
+* The route table routes the traffic locally within the VPC, between the public subnet and the private subnet, and to the EC2 instance
 
 ### DNS && Route 53
 * Route 53 returns the look-up IP, it does not redirect the traffic through route 53
