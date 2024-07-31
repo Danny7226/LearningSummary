@@ -63,6 +63,10 @@
 
 [DNS & Route 53]()
 
+[High Availability load balancing]()
+
+[Dragonfly DB vs Reddis]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -547,3 +551,19 @@ http {
     * Return primary resource IP unless it's unreachable, in which case route53 returns the secondary resource IP
   * Above policies can be used in combination to serve the overall routing experience
 
+### High Availability load balancing
+* https://www.lisenet.com/2015/setting-up-a-load-balancing-cluster-with-heartbeat-and-ldirectord/
+* Above approach maintains a load balancing cluster, where the secondary node listens to the heart beat of the primary node and take over the load balancing responsibility once primary dead
+* Idirectord is a daemon process that checks the health status of the actual server nodes
+* They appear/advertise with the same VIP to the outside world
+* Follow up is to understand the comparison with `keepalived + nginx`
+
+### Dragonfly DB vs Reddis
+* Reddis is single-threaded with a cluster of partitions to ensure atomicity and serializability
+* Reddis isn't efficient in the way of utilizing the max out of hardware (say, even the hardware is 64core, it can only utilize 1 core per host)
+* Dragonfly is multi-threaded, and therefore a mechanism to establish atomicity and serializability is needed
+  * Dragonfly uses N mutex hashmap. N is less than the physical number of core of the host
+  * Dragonfly has dedicated fiber (fiber as in micro thread) for each mutex hashmap to ensure atomicity
+  * Dragonfly has message-bus to avoid IO blocking to establish a shared nothing architecture
+  * Dragonfly has a transaction queue for each mutex fiber as well as a 2-phased-commit modeled coordination fiber to maintain the integrity of shared-nothing-architecture
+* Dragonfly uses b+tree instead of skip-list as the implementation of sorted set to reduce the data-structure memory overhead
