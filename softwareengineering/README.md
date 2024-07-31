@@ -67,6 +67,8 @@
 
 [Dragonfly DB vs Reddis]()
 
+[DB migration]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -567,3 +569,16 @@ http {
   * Dragonfly has message-bus to avoid IO blocking to establish a shared nothing architecture
   * Dragonfly has a transaction queue for each mutex fiber as well as a 2-phased-commit modeled coordination fiber to maintain the integrity of shared-nothing-architecture
 * Dragonfly uses b+tree instead of skip-list as the implementation of sorted set to reduce the data-structure memory overhead
+
+### DB migration
+* What if there is a need to migration/flip the usage from one existing DB (old DB) that serves high throughput traffic to a new DB that is currently empty
+* Steps are below
+  * Enable dual writes - once a request comes, the request will write new data to both DB. In the same time, reads are still served by the old DB
+  * Perform data backfill from old DB to new DB - during which, the reads are still simply served from the old DB
+  * Enable dual reads - compare the delta/discrepancy to get a sense of confidence of the migration
+* 2 challenges regarding above
+  * What if the dual writes is partially succeeded
+  * What if the backfill overrides the new DB with stale data
+* Solutions to above 2
+  * The old DB change data capture (CDC) will be streaming processed to compare the discrepancy with new DB and report in a 3rd DB for engineers to look into
+  * backfill job will need to make sure not to override the data with newer timestamp in the new DB
