@@ -537,4 +537,3 @@ Implement immediate notifications for both JVM failures and instances where heal
     * designing stateless api and scale horizontally
     * partitioning database so that increase the overall throughput of the database IO
   
-  

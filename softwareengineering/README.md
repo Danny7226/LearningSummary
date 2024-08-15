@@ -69,6 +69,8 @@
 
 [DB migration]()
 
+[shuffle sharding]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -582,3 +584,12 @@ http {
 * Solutions to above 2
   * The old DB change data capture (CDC) will be streaming processed to compare the discrepancy with new DB and report in a 3rd DB for engineers to look into
   * backfill job will need to make sure not to override the data with newer timestamp in the new DB
+
+### Shuffle sharding
+* Horizontal scaling is great for balancing traffic and single instance failure with stateless redundency
+* Sharding is great for customer isolation so that only a set of instances are impacted when poison request happens
+* traditional sharding has larger impact compared to shuffle sharding
+  * 8 instances split into 4 shards - 2 instances each shard for redundency
+  * Traditional sharding will have instance 1_2 as shard1, instance 3_4 as shard2 - single instance is mapped to only 1 shard - only 4 shards can be created, any poison request can impact 1/4 of the total customers
+  * Shuffle sharding will have 8 instances split into 8*7 = 56 shards - instance 1_2 as shard1, instance 2_3 as shard2 ... - In this way, blast radius of single poison request is controlled within 1/56 of the total customer, which is much better than 1/4
+  * shuffle shardding requires one instance serving traffic for more than one shard, which meanswe are trading CPU/DISK/IO for high granular shards
