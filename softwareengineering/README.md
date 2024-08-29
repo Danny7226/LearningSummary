@@ -71,6 +71,8 @@
 
 [shuffle sharding]()
 
+[EWMA, exponentially weighted moving average]()
+
 ## Topics
 ### Sql vs NoSql
 Structural query language (SQL) is a domain specific Lange(DSL) designed for relational database manage system (RDBMS)
@@ -593,3 +595,10 @@ http {
   * Traditional sharding will have instance 1_2 as shard1, instance 3_4 as shard2 - single instance is mapped to only 1 shard - only 4 shards can be created, any poison request can impact 1/4 of the total customers
   * Shuffle sharding will have 8 instances split into 8*7 = 56 shards - instance 1_2 as shard1, instance 2_3 as shard2 ... - In this way, blast radius of single poison request is controlled within 1/56 of the total customer, which is much better than 1/4
   * shuffle shardding requires one instance serving traffic for more than one shard, which meanswe are trading CPU/DISK/IO for high granular shards
+
+
+### EWMA, exponentially weighted moving average
+* It’s called exponentially as the weight of the previous observation value is fading away exponentially. The speed of the fading away is determined by a parameter ß. ß is ranged [0, 1]
+* Wn = ß*Wn-1 + (1-ß)*Tn, Wn is the EWMA score of time n, Tn is the current observation at time n
+* The higher ß is, less sensitive it is to current observation (to only capture big changes)
+* Usually using ß 0.9 and above to capture decent changes; using 0.8 and below to capture small changes
